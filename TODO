@@ -1,0 +1,34 @@
+📋 Lista de TODOs Pendientes
+🔐 Módulo de Autenticación (Auth)
+auth.service.ts
+
+✅ Implementar el servicio de registros
+✅ Descomentar y completar el método register()
+login.guard.ts
+
+✅ Implementar la lógica del guard de login
+✅ Agregar validación de autenticación real
+register-page.component.ts
+
+✅ Implementar el servicio de registro en el método Submit()
+✅ Implementar validaciones básicas del formulario (método formError())
+✅ Optimizar código duplicado entre login-page.component.ts y register-page.component.ts
+password-match.validator.ts
+
+✅ Implementar validador para confirmar que las contraseñas coincidan
+user-already-existe.validator.ts
+
+✅ Implementar validador asíncrono para verificar si el usuario ya existe
+🏠 Módulo Dashboard
+side-bar.component.ts
+✅ Implementar detalles de rutas de la barra lateral
+✅ Implementar funcionalidad responsive
+🧩 Componentes Generales
+login-page.component.ts
+✅ Implementar lógica del método onLogin()
+✅ Optimizar código duplicado con register-page.component.ts (animaciones)
+📄 Templates HTML
+register-page.component.html
+✅ Completar los campos del formulario (muchos están vacíos)
+✅ Agregar validaciones visuales
+✅ Implementar binding con el FormGroup

@@ -1,0 +1,174 @@
+<!-- login.component.html -->
+<div class="min-h-screen flex items-center justify-center p-4  "
+    [class.animate__animated]="mostrarAnimacion()"
+    [class.animate__slideInLeft]="mostrarAnimacion()">
+
+  <div class="bg-gray-800 rounded-2xl p-8 w-full max-w-md shadow-2xl">
+    <!-- Illustration and Title -->
+    <div class="text-center mb-4">
+      <!-- Custom Icon/Illustration -->
+      <div class="flex justify-center">
+        <div class="relative">
+          <!-- Person Icon -->
+
+          <img
+            class="w-20 h-20"
+            src="../../../../assets/icons/user-icon.png"
+            alt
+          />
+          <!-- Table/Desk -->
+        </div>
+      </div>
+
+      <h1 class="text-white text-3xl font-bold mb-2">Login</h1>
+    </div>
+
+    <!-- Form -->
+    <form class="space-y-4">
+      <!-- Email Field -->
+      <div>
+        <label for="email" class="block text-gray-300 text-sm mb-2">
+          E-mail
+        </label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Ingrese su correo"
+          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        />
+      </div>
+
+      <!-- Password Field -->
+      <div>
+        <label for="password" class="block text-gray-300 text-sm mb-2">
+          Contraseña
+        </label>
+        <div class="relative">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Ingrese su contraseña"
+            class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12"
+          />
+          <div
+            (click)="Hold()"
+            class="absolute right-3 cursor-pointer top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                *ngIf="!showPassword"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+              <path
+                *ngIf="!showPassword"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              ></path>
+              <path
+                *ngIf="showPassword"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+              ></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Forgot Password -->
+        <div class="text-right">
+          <a
+            routerLink="/notFound"
+            class="text-blue-400 hover:text-blue-300 text-sm transition-colors"
+          >
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
+        <!-- Login Button -->
+        <button
+          type="submit"
+          (click)="onLogin()"
+          class="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
+        >
+          Ingresar
+        </button>
+      </div>
+    </form>
+
+    <!-- Social Login -->
+    <div class="mt-8">
+      <div class="text-center text-gray-400 text-sm mb-4">
+        ¿No tienes una cuenta?
+        <a
+          (click)="onGoRegister()"
+          class="text-blue-400 cursor-pointer hover:text-blue-300 transition-colors ml-1"
+        >
+          Regístrate
+        </a>
+      </div>
+
+      <div class="text-center text-gray-400 text-xs mb-4 font-bold">
+        Social login
+      </div>
+
+      <div class="flex justify-center space-x-4">
+        <button
+          class="w-12 h-12 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center transition-all duration-200 transform hover:scale-105"
+        >
+          <svg
+            class="w-6 h-6 text-white"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M20,18H18V9.25L12,13L6,9.25V18H4V6H5.2L12,10.25L18.8,6H20M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"
+            ></path>
+          </svg>
+        </button>
+
+        <button
+          class="cursor-pointer w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-all duration-200 transform hover:scale-105"
+        >
+          <svg
+            class="w-6 h-6 text-white"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+            ></path>
+          </svg>
+        </button>
+        <button
+          class="cursor-pointer w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 rounded-lg flex items-center justify-center transition-all duration-200 transform hover:scale-1</button>05"
+        >
+          <svg
+            class="w-6 h-6 text-white"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11.4 24H0V12.6h11.4V24zM24 24H12.6V12.6H24V24zM11.4 11.4H0V0h11.4v11.4zM24 11.4H12.6V0H24v11.4z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<footer>
+  <app-footer></app-footer>
+</footer>
