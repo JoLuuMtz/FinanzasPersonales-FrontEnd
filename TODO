@@ -10,6 +10,7 @@ login.guard.ts
 ✅ Agregar validación de autenticación real
 register-page.component.ts
 
+
 ✅ Implementar el servicio de registro en el método Submit()
 ✅ Implementar validaciones básicas del formulario (método formError())
 ✅ Optimizar código duplicado entre login-page.component.ts y register-page.component.ts

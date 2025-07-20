@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
   selector: 'side-bar',
   imports: [RouterModule],
   templateUrl: './side-bar.component.html',
-  styleUrl: './side-bar.component.css',
 })
 export class SideBarComponent {
   //todo: implementar detales rutas de la barra lateral y el responsive
