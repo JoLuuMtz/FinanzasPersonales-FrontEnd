@@ -16,8 +16,3 @@ export interface RegisterResponse {
   token?: string;
 }
 
-export interface ApiError {
-  message: string;
-  statusCode: number;
-  timestamp: string;
-}

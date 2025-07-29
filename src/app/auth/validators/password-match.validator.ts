@@ -11,7 +11,7 @@ export const PassWordMatchValidator = (pass: string, confirm: string ): Validato
       }
 
       if ( password !== confirmPassword) {
-        return {  passwordNotMatch : true }; // Si las contraseñas no coinciden, retorna un error
+        return { passwordNotMatch: true }; // Si las contraseñas no coinciden, retorna un error
       }
       return null; // Si las contraseñas coinciden, no hay errores
     }

@@ -6,7 +6,7 @@ import {
 
 } from '@angular/router';
 
-export const loginGuard: CanActivateFn = (
+export const AuthGuard: CanActivateFn = (
 
 ) => {
   const router = inject(Router);
