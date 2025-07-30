@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { TitleComponent } from '../../components/title/title.component';
 
 @Component({
   selector: 'app-setting-page',
-  imports: [],
+  imports: [TitleComponent],
   templateUrl: './setting-page.component.html',
-  styleUrl: './setting-page.component.css'
+  styleUrl: './setting-page.component.css',
 })
-export class SettingPageComponent {
-
-}
+export class SettingPageComponent {}

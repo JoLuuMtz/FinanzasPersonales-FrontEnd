@@ -22,7 +22,7 @@
         (click)="OnGoToProfile()"
         class="text-xs sm:text-sm font-bold cursor-pointer hover:text-gray-300 transition-colors duration-200 whitespace-nowrap"
       >
-        Welcome User
+        Welcome  {{ userName }}
       </span>
     </div>
 
@@ -32,7 +32,8 @@
     <!-- Logout Button -->
     <button
       class="text-xs sm:text-sm cursor-pointer hover:text-gray-300 transition-colors font-bold whitespace-nowrap order-3"
-    >
+      (click)="onLogOut()"
+      >
       Log out
     </button>
   </div>

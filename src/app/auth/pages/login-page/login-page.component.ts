@@ -33,9 +33,9 @@ export default class LoginPageComponent implements AfterViewInit {
   private fb: FormBuilder = new FormBuilder();
 
   public loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, EmailValidator()]],
+    email: ['prueba@example.com', [Validators.required, EmailValidator()]],
     password: [
-      '',
+      'Prueba12345*',
       [
         Validators.required,
         Validators.minLength(8),
@@ -43,7 +43,7 @@ export default class LoginPageComponent implements AfterViewInit {
       ],
     ],
   });
-  //TODO: Crear el formulario de login  y la logica de login
+
   constructor() {}
 
   // showPassword: boolean = false;
@@ -96,6 +96,7 @@ export default class LoginPageComponent implements AfterViewInit {
             showConfirmButton: false,
           })
           .then(() => {
+            console.log("Login-component", this.authService.getCurrentUser());
             this.router.navigate(['/dashboard']);
           });
       },
@@ -111,12 +112,7 @@ export default class LoginPageComponent implements AfterViewInit {
     });
   }
 
-  /**
-   * Redirige al registro
-   */
-  onGoRegister(): void {
-    this.router.navigate(['/auth/register']);
-  }
+
 
   /**
    * Alterna la visibilidad de la contraseña
@@ -139,11 +135,5 @@ export default class LoginPageComponent implements AfterViewInit {
     return this.authService.getFieldError(this.loginForm, fieldName);
   }
 
-  /**
-   * Borra la sesión del usuario y redirige al login
-   */
-  onLogOut(): void {
-    this.authService.logOut();
-    this.router.navigate(['/auth/login']);
-  }
+ 
 }

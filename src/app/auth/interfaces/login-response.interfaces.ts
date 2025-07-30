@@ -4,7 +4,7 @@ export interface LoginResponse {
   success: boolean; // indica si el inicio de sesión fue exitoso
   message: string; // mensaje de respuesta
   accessToken: string; // JWT token
-  User: UserData;
+  user: UserData;
 }
 
 export interface LoginDTO {

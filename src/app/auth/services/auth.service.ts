@@ -34,23 +34,68 @@ export class AuthService {
   });
 
   constructor() {
-    // console.log(this.baseUrl);
-    // // manejador de estado de la Autenticacion
-    // const token = localStorage.getItem('accessToken');
-    // if (!token) {
-    //   this.IsAutenticated.set(false);
-    //   this.userAuthenticatedStatus.set('unauthenticated');
-    //   this.currentUser.set(null);
-    //   return;
-    // }
-    // effect(() => {
-    //   const user = this.getCurrentUser();
-    //   if (user && token) { // si hay data y token
-    //     console.log('Usuario autenticado:', user);
-    //   } else {
-    //     console.log('No hay usuario autenticado');
-    //   }
-    // });
+    console.log(this.baseUrl);
+
+    // Inicializar estado desde localStorage al arrancar la app
+    this.initializeAuthState();
+
+    // Effect para manejar cambios en el estado de autenticación
+    effect(() => {
+      const user = this.getCurrentUser();
+      const token = this.userToken();
+
+      if (user && token) {
+        console.log('Usuario autenticado:', user);
+        this.IsAutenticated.set(true);
+        this.userAuthenticatedStatus.set('authenticated');
+      } else {
+        console.log('No hay usuario autenticado');
+        this.IsAutenticated.set(false);
+        this.userAuthenticatedStatus.set('unauthenticated');
+      }
+    });
+  }
+
+  /**
+   * Inicializa el estado de autenticación desde localStorage
+   */
+  private initializeAuthState(): void {
+    const token = localStorage.getItem('accessToken');
+    const userData = localStorage.getItem('User');
+
+    if (token && userData) {
+      try {
+        const user: UserData = JSON.parse(userData);
+
+        // Restaurar estado desde localStorage
+        this.userToken.set(token);
+        this.currentUser.set(user);
+        this.IsAutenticated.set(true);
+        this.userAuthenticatedStatus.set('authenticated');
+
+        console.log('Estado de autenticación restaurado desde localStorage');
+      } catch (error) {
+        console.error(
+          'Error al parsear datos de usuario desde localStorage:',
+          error
+        );
+        this.clearAuthState();
+      }
+    } else {
+      this.clearAuthState();
+    }
+  }
+
+  /**
+   * Limpia completamente el estado de autenticación
+   */
+  private clearAuthState(): void {
+    this.currentUser.set(null);
+    this.IsAutenticated.set(false);
+    this.userAuthenticatedStatus.set('unauthenticated');
+    this.userToken.set(null);
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('User');
   }
 
   // Todo: Implementar el servicio de registros
@@ -65,16 +110,29 @@ export class AuthService {
       );
   }
 
+  //TODO: ARREGLAR QUE LA DATA NO ME LA ESTA RECIBIENDO EL BACKEND
+
   login(login: LoginDTO): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${this.baseUrl}/user/login`, login)
       .pipe(
-        tap((response: LoginResponse) => {
-          this.currentUser.set(response.User); // Actualiza la data del usuario actual
+        tap((response: any) => {
+          // Asegúrate de que la propiedad sea la correcta según la respuesta del backend
+          const user: UserData = response.user;
+          // console.log("DATA DEL USUARIO ", user);
+          this.currentUser.set(user); // Actualiza la data del usuario actual
           this.IsAutenticated.set(true); // Actualiza el estado de autenticación
           this.userAuthenticatedStatus.set('authenticated'); // Actualiza el estado de autenticación
+
           localStorage.setItem('accessToken', response.accessToken); // Guarda el token en localStorage
           this.userToken.set(response.accessToken); // Guarda el token en el estado
+          localStorage.setItem('User', JSON.stringify(user)); // Guarda el usuario en localStorage
+          console.log('Usuario autenticado:', this.getCurrentUser());
+          console.log(`usuario estatus ${this.userAuthenticatedStatus()}
+              , token del usuario ${this.userToken()}
+              , autenticado: ${this.IsAutenticated()}
+
+              `);
         }),
         timeout(10000), // Timeout de 10 segundos
         retry(2), // Reintentar 2 veces en caso de error
@@ -85,11 +143,8 @@ export class AuthService {
   }
 
   logOut(): void {
-    this.currentUser.set(null);
-    this.IsAutenticated.set(false);
-    this.userAuthenticatedStatus.set('unauthenticated');
-    this.userToken.set(null);
-    localStorage.removeItem('accessToken');
+    this.clearAuthState();
+    console.log('Usuario deslogueado correctamente');
   }
 
   // ================================

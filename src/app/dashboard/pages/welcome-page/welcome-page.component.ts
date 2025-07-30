@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+
+import { TitleComponent } from '../../components/title/title.component';
 
 @Component({
   selector: 'app-welcome-page',
-  imports: [],
+  imports: [TitleComponent],
   templateUrl: './welcome-page.component.html',
-  styleUrl: './welcome-page.component.css'
 })
 export class WelcomePageComponent {
+
+  
 
 }

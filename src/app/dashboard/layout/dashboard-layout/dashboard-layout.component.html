@@ -1,15 +1,16 @@
-
 <div class="h-screen flex flex-col">
 
-  <div class="flex flex-1 md:flex-row overflow-hidden">
-    <side-bar></side-bar>
 
-    <div class="flex-1 flex flex-col text-white font-bold sm:text-sm">
-      <header-component></header-component>
-      <!-- Contenedor con scroll -->
-      <div class="flex-1 m-4 overflow-y-auto rounded p-4 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent hover:scrollbar-thumb-gray-600">
-        <router-outlet></router-outlet>
-      </div>
+    <div class="flex flex-1 md:flex-row overflow-hidden">
+        <side-bar></side-bar>
+
+
+        <div class="flex-1 flex flex-col text-white font-bold sm:text-sm">
+            <header-component [userName]="userName()"></header-component>
+            <!-- Contenedor con scroll -->
+            <div class="flex-1 m-4 overflow-y-auto rounded p-4 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent hover:scrollbar-thumb-gray-600">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
