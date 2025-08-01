@@ -1,13 +1,14 @@
 <div class="h-screen flex flex-col">
 
-
-    <div class="flex flex-1 md:flex-row overflow-hidden">
-        <side-bar></side-bar>
-
+    <div class="flex flex-1 md:flex-row  lg:flex-row overflow-hidden">
+        <div class="w-20 md:w-20 sm:w-60 lg:w-60  bg-black ">
+            <side-bar></side-bar>
+        </div>
 
         <div class="flex-1 flex flex-col text-white font-bold sm:text-sm">
             <header-component [userName]="userName()"></header-component>
-            <!-- Contenedor con scroll -->
+
+            <!-- Área con scroll si se requiere -->
             <div class="flex-1 m-4 overflow-y-auto rounded p-4 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent hover:scrollbar-thumb-gray-600">
                 <router-outlet></router-outlet>
             </div>

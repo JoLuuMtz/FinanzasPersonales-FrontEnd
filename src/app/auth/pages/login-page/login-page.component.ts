@@ -48,6 +48,7 @@ export default class LoginPageComponent implements AfterViewInit {
 
   // showPassword: boolean = false;
 
+  // animacion de component
   ngAfterViewInit() {
     // Pequeño delay para asegurar que el DOM esté listo
     setTimeout(() => {
@@ -135,5 +136,5 @@ export default class LoginPageComponent implements AfterViewInit {
     return this.authService.getFieldError(this.loginForm, fieldName);
   }
 
- 
+
 }

@@ -133,8 +133,7 @@ export default class RegisterPageComponent {
     // Llamar al servicio de registro
     this.authService.register(registerDTO).subscribe({
       next: (response) => {
-        // this.isLoading.set(false);
-        // console.log('Registro exitoso:', response);
+      
 
         this.swal
           .fire({

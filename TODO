@@ -1,15 +1,5 @@
 📋 Lista de TODOs Pendientes
 
-🔐 Módulo de Autenticación (Auth)
-auth.service.ts
-
-
-✅ Implementar la lógica del guard de login
-
-✅ Optimizar código duplicado entre login-page.component.ts y register-page.component.ts
-password-match.validator.ts
-
-✅ Implementar LoginComponent y logica de Login en el servicio
 
 ✅ Implementar el Estado de autenticacion y token
 
@@ -18,19 +8,23 @@ password-match.validator.ts
 
 🏠 Módulo Dashboard
 
-side-bar.component.ts
-✅ Implementar detalles de rutas de la barra lateral
-✅ Implementar funcionalidad responsive
 
-🧩 Componentes Generales
+ Componentes Generales
+Dialog 
+- Formulario de ingreso/edicion de gastos y ingresos ( reutilizable dialog ) *SpendIncomesForm *
+- formulario de ingreso y edicion de budget (no reutilizable es solo para budget ) budgetForm
 
-login-page.component.ts
+Tablas
 
-✅ Implementar lógica del método onLogin()
+- tabla para mostrar el listado de gastos y  ingresos (reutilizable ) history-table
+- tabla para el presupuesto ya que es diferente (no reutilizable solo para el budget) history-table-budget
 
-✅ Optimizar código duplicado con register-page.component.ts (animaciones)
+components 
 
-
+Componente de budget 
+budget-Component 
+Action-bar (para llos historiales de tablas)
+Profile-Card
 
 
 
