@@ -1,12 +1,15 @@
 import { AuthService } from './../../auth/services/auth.service';
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthRoutes } from '../../auth/auth.route';
+import { UserData } from '../../auth/interfaces/user.interfaces';
+
 
 @Injectable({providedIn: 'root'})
-export class ServiceNameService {
+export class UserService {
   private readonly _http = inject(HttpClient);
   private readonly _authService: AuthService = inject(AuthService);
+
+  public User : UserData  = this._authService.getCurrentUser() as UserData;
 
 
 

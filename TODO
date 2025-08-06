@@ -1,16 +1,13 @@
+### EJECUTATR EL BACK END dotnet run --launch-profile "https"
 📋 Lista de TODOs Pendientes
 
-
-✅ Implementar el Estado de autenticacion y token
-
-
-
+✅ Implementar el Estado de autenticacion y token ( listo )
 
 🏠 Módulo Dashboard
 
-
  Componentes Generales
-Dialog 
+
+Dialog
 - Formulario de ingreso/edicion de gastos y ingresos ( reutilizable dialog ) *SpendIncomesForm *
 - formulario de ingreso y edicion de budget (no reutilizable es solo para budget ) budgetForm
 
@@ -19,12 +16,18 @@ Tablas
 - tabla para mostrar el listado de gastos y  ingresos (reutilizable ) history-table
 - tabla para el presupuesto ya que es diferente (no reutilizable solo para el budget) history-table-budget
 
-components 
+components
 
-Componente de budget 
-budget-Component 
-Action-bar (para llos historiales de tablas)
-Profile-Card
-
+Componente de budget
+budget-Component
+Action-bar (para los historiales de tablas)
 
 
+- Leer y entender que hace este Interceptor  Al momento de implementar el Token para las peticiones protegidas de mi bakend
+
+
+
+
+# Modulo 2
+
+ Implementar Http-Only para el almacenar el token en la Cookie y no en el LocalStorage

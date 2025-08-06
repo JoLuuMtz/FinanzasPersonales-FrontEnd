@@ -1,1 +1,55 @@
-<p>budget works!</p>
+<div class="flex flex-col h-full w-180 sticky top-0 left-0 ">
+  <!-- Contenedor principal con scroll horizontal para las cartas -->
+  <div class="flex gap-4 p-4 sticky overflow-x-auto ">
+    <!-- Budget Cards -->
+    @for ( budget of budgets; track $index ) {
+  <div
+      class="relative bg-black rounded-lg p-6 w-40 h-32 flex flex-col justify-between text-white shadow-lg hover:bg-gray-900 transition-colors duration-200 flex-shrink-0"
+      style="box-shadow: 0 4px 15px 0 rgba(255, 255, 255, 0.15), 0 1.5px 8px 0 rgba(0,0,0,0.25); background: linear-gradient(160deg, #18181b 90%, #ffffff 100%); border: 1.5px solid #ffffff;">
+      <!-- TODO: Implementar el borrado del presupuesto -->
+      <button class="absolute top-3 right-3 w-5 h-5 text-amber-50 hover:text-white transition-colors cursor-pointer"
+        aria-label="Eliminar presupuesto" (click)="deleteBudget(1)">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+        </svg>
+      </button>
+
+      <!-- Budget Info -->
+      <div class="mt-2">
+        <h3 class="text-sm font-bold text-gray-200">{{ budget.name |titlecase }}</h3>
+      </div>
+
+      <div class="mb-1">
+        <p class="text-xs text-gray-300 mb-1">TOTAL:</p>
+        <p class="font-semibold text-base">{{  totalBudget() | currency:'$' }}</p>
+      </div>
+    </div>
+    }
+
+
+
+
+
+
+    <!-- Puedes agregar más cartas aquí y se hará scroll horizontal automáticamente -->
+  </div>
+
+
+  <!-- Botón fijo abajo para agregar más presupuestos -->
+  <div class="p-4 flex justify-center ">
+
+    <button (click)="addNewBudget()"
+      class="w-60 bg-white rounded-lg h-16 flex cursor-pointer flex-col items-center justify-center text-gray-700 shadow-lg hover:bg-gray-50 transition-colors duration-200 border-2 border-dashed border-gray-300">
+      <div class="w-8 h-8 mb-1 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-500">
+        <svg viewBox="0 0 24 24" fill="white" class="w-5 h-5">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+        </svg>
+      </div>
+      <span class="font-bold text-sm">Nuevo prespuesto</span>
+    </button>
+  </div>
+
+
+
+
+</div>
