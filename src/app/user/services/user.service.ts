@@ -9,8 +9,7 @@ export class UserService {
   private readonly _http = inject(HttpClient);
   private readonly _authService: AuthService = inject(AuthService);
 
-  public User : UserData  = this._authService.getCurrentUser() as UserData;
-
+  public User: UserData = this._authService.getCurrentUser() as UserData;
 
 
   // Todo: Implementar Operaciones al servicio de usuarios... CRUD ETC

@@ -14,10 +14,11 @@ export interface UserData {
 }
 
 export interface UserBudget {
-  idBudget:    number;
-  name:        string;
+  idBudget: number;
+  name: string;
   description: string;
-  date:        Date;
+  totalAmount: number;
+  date: Date;
   budgetLists: BudgetList[];
 }
 

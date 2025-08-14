@@ -14,6 +14,17 @@
       Agregar
     </button>
 
-    <spend-income-form [visible]="isVisible" />
+    <!-- <spend-income-form [visible]="isVisible" /> -->
+
+    <dialog-form
+      (closeDialog)="closeDialog()"
+      [height]="'500px'"
+      [width]="'500px'"
+      [isVisible]="isVisible"
+      [title]="'Agregar Prespuesto'"
+    >
+
+      <!-- TODO: HACER EL FORM para agregar Incomes  -->
+    </dialog-form>
   </div>
 </div>
