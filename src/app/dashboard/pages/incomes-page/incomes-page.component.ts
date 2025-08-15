@@ -35,7 +35,7 @@ export class IncomesPageComponent implements OnInit {
     this._incomesService.getIncomeType().subscribe({
       next: (data) => {
         if (data) {
-          this.incomeType.set(data);
+          this.incomeType.set(data); 
         }
       },
       error: (err) => {
