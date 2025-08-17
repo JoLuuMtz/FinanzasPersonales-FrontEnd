@@ -5,16 +5,20 @@
   </div>
   <!-- contenido -->
   <div class="mx-40">
-    <p>incomes-page works!</p>
 
-    <button
+
+    <!-- <button
       (click)="toggleVisibility()"
       class="p-2 bg-black text-white rounded-2xl hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
     >
       Agregar
-    </button>
+    </button> -->
+    <nav-list  (showDialog)="toggleVisibility()"> </nav-list>
 
-    <!-- <spend-income-form [visible]="isVisible" /> -->
+
+    <div class="mt-4">
+      <history-table></history-table>
+    </div>
 
     <dialog-form
       (closeDialog)="closeDialog()"
@@ -23,8 +27,90 @@
       [isVisible]="isVisible"
       [title]="'Agregar Prespuesto'"
     >
-
       <!-- TODO: HACER EL FORM para agregar Incomes  -->
+
+      <form [formGroup]="IncomeForm" (submit)="OnSubmit()" novalidate>
+        <div class="flex flex-col gap-4 p-4 text-black">
+          <!-- Nombre -->
+          <label class="flex flex-col font-semibold text-sm">
+            Nombre
+            <input
+              type="text"
+              class="mt-1 p-2 border rounded"
+              formControlName="name"
+            />
+          </label>
+
+          <!-- Descripción -->
+          <label class="flex flex-col font-semibold text-sm">
+            Descripción
+            <input
+            datepicker
+              type="text"
+              class="mt-1 p-2 border rounded"
+              formControlName="description"
+            />
+          </label>
+
+          <!-- Monto -->
+          <label class="flex flex-col font-semibold text-sm">
+            Monto
+            <input
+              type="number"
+              class="mt-1 p-2 border rounded"
+              formControlName="amount"
+              min="0"
+            />
+          </label>
+
+          <!-- Fecha -->
+          <label class="flex flex-col font-semibold text-sm">
+            Fecha
+            <input
+              type="date"
+              class="mt-1 p-2 border rounded"
+              formControlName="date"
+            />
+          </label>
+
+          <!-- Tipo de Ingreso -->
+          <label class="flex flex-col font-semibold text-sm">
+            Tipo de Ingreso
+
+            <select
+                class="bg-gray-500 border border-gray-300 text-black text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-gray-500 dark:focus:border-gray-500"
+              formControlName="typeIncome"
+            >
+              <option value="" disabled selected class="bg-gray-200 text-black">
+                Seleccione un tipo
+              </option>
+
+              @for (type of incomeType(); track type.idTypeIncomes) {
+              <option
+                [value]="type.idTypeIncomes"
+
+              >
+                {{ type.name | titlecase }}
+              </option>
+              }
+            </select>
+
+
+
+          </label>
+
+          <!-- Botón de enviar (puedes conectar el submit luego en el TS) -->
+            <button
+            type="submit"
+            (click)="closeDialog()"
+            class="cursor-pointer mt-4 p-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
+            [disabled]="!IncomeForm.valid"
+            >
+            Agregar
+          </button>
+
+        </div>
+      </form>
     </dialog-form>
   </div>
 </div>

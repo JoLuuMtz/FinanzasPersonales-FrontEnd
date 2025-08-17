@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './dialog-form.component.css',
 })
 export class DialogFormComponent {
+  
   @Input() isVisible: boolean = false;
   @Input() title: string = '';
   @Input() width: string = '500px';

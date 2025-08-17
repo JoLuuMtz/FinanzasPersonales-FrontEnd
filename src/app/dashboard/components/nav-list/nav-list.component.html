@@ -1,0 +1,39 @@
+
+<div class=" text-white px-4 py-3 flex items-center justify-between shadow-lg">
+
+      <!-- Add New Incomes Button -->
+      <button
+        (click)="onAddClick()"
+        class="bg-black cursor-pointer hover:bg-gray-950 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200 border border-gray-600">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        <span class="font-medium">Nuevo Ingreso</span>
+      </button>
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-md mx-8">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <input
+            type="text"
+            #searchInput
+
+            placeholder="Encontrar Por nombre"
+            class="w-full pl-10 pr-4 py-2 bg-black border border-gray-600 rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:to-black focus:border-transparent">
+        </div>
+      </div>
+
+      <!-- Total Incomes -->
+      <div class="flex items-center-safe gap-2 bg-black px-4  rounded-lg border border-white">
+        <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+        </svg>
+        <span class="font-bold text-sm">TOTAL$: </span>
+        <span class="font-bold text-2xl text-green-400">{{ '10000' }}</span>
+      </div>
+    </div>

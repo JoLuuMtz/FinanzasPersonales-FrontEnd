@@ -1,4 +1,4 @@
-# 📊 FinanciApp - Aplicación de Finanzas Personales
+# 📊 MoneyMind - Aplicación de Finanzas Personales
 
 Una aplicación web moderna para la gestión de finanzas personales desarrollada con Angular 19, siguiendo principios de Clean Architecture.
 

@@ -7,11 +7,85 @@
 
 @layer theme {
 
+  /* formateo general  */
   body {
     margin: 0;
     padding: 0;
     font-family: 'Inria Sans', sans-serif;
     background-color: #131313
   }
+
+  /* quitar el spinner de los numeros  */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* boton de fechas en los input dates */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    color: red;
+    /* cambia el color del ícono */
+    filter: invert(40%) sepia(100%) saturate(500%) hue-rotate(200deg);
+    cursor: pointer;
+
+  }
+
+
+  /* Estilo personalizado para select */
+  /* select {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+  } */
+
+  /* select:focus {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px #fff3;
+  } */
+
+  /* Estilo para las opciones del select */
+  /* option {
+    background-color: #000;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+  } */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
