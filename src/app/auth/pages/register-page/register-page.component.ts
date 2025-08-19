@@ -13,6 +13,7 @@ import { Router, RouterModule } from '@angular/router';
 import { FooterComponent } from '../../../shared/components/footer/footer.component';
 import { Component, inject, signal } from '@angular/core';
 import { PassWordMatchValidator } from '../../validators/password-match.validator';
+import { FormValidService } from '../../../shared/services/form-valid.service';
 
 @Component({
   selector: 'app-register-page',
@@ -26,6 +27,7 @@ export default class RegisterPageComponent {
   private readonly router = inject(Router);
   private readonly swal = sweetalert2;
   private readonly UserAlreadyExistService = inject(UserAlreadyExistService);
+  private readonly formValidService =  inject(FormValidService);
 
   private fb: FormBuilder = new FormBuilder();
   // public isLoading = signal<boolean>(false);
@@ -94,8 +96,8 @@ export default class RegisterPageComponent {
       this.registerForm.markAllAsTouched();
 
       // Verificar si hay errores de servidor usando el método centralizado
-      if (this.authService.hasServerErrors(this.registerForm, 'email')) {
-        const errorMessage = this.authService.getServerErrorMessage(
+      if (this.formValidService.hasServerErrors(this.registerForm, 'email')) {
+        const errorMessage = this.formValidService.getServerErrorMessage(
           this.registerForm,
           'email'
         );
@@ -112,8 +114,8 @@ export default class RegisterPageComponent {
     }
 
     // Verificar una vez más si hay errores de servidor antes de enviar
-    if (this.authService.hasServerErrors(this.registerForm, 'email')) {
-      const errorMessage = this.authService.getServerErrorMessage(
+    if (this.formValidService.hasServerErrors(this.registerForm, 'email')) {
+      const errorMessage = this.formValidService.getServerErrorMessage(
         this.registerForm,
         'email'
       );
@@ -133,7 +135,7 @@ export default class RegisterPageComponent {
     // Llamar al servicio de registro
     this.authService.register(registerDTO).subscribe({
       next: (response) => {
-      
+
 
         this.swal
           .fire({
@@ -169,7 +171,7 @@ export default class RegisterPageComponent {
    * @returns true si hay errores de servidor
    */
   hasServerErrors(): boolean {
-    return this.authService.hasServerErrors(this.registerForm, 'email');
+    return this.formValidService.hasServerErrors(this.registerForm, 'email');
   }
 
   /**
@@ -177,7 +179,10 @@ export default class RegisterPageComponent {
    * @returns string con el mensaje de error o null
    */
   getServerErrorMessage(): string | null {
-    return this.authService.getServerErrorMessage(this.registerForm, 'email');
+    return this.formValidService.getServerErrorMessage(
+      this.registerForm,
+      'email'
+    );
   }
 
   /**
@@ -186,7 +191,7 @@ export default class RegisterPageComponent {
    * @returns true si el campo es inválido y ha sido tocado
    */
   isFieldInvalid(fieldName: string): boolean {
-    return this.authService.isFieldInvalid(this.registerForm, fieldName);
+    return this.formValidService.isFieldInvalid(this.registerForm, fieldName);
   }
 
   /**
@@ -195,6 +200,6 @@ export default class RegisterPageComponent {
    * @returns string con el mensaje de error o null
    */
   formError(field: string): string | null {
-    return this.authService.getFieldError(this.registerForm, field);
+    return this.formValidService.getFieldError(this.registerForm, field);
   }
 }

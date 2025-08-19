@@ -13,6 +13,7 @@ import { IncomesService } from '../../services/incomes.service';
 import { HistoryTableComponent } from '../../components/history-table/history-table.component';
 import { UserService } from '../../../user/services/user.service';
 import { NavListComponent } from '../../components/nav-list/nav-list.component';
+import { FormValidService } from '../../../shared/services/form-valid.service';
 
 @Component({
   selector: 'app-incomes-page',
@@ -28,16 +29,19 @@ import { NavListComponent } from '../../components/nav-list/nav-list.component';
   styleUrl: './incomes-page.component.css',
 })
 export class IncomesPageComponent implements OnInit {
+
+  //? Propiedades el componente
   public isVisible: boolean = false;
   private readonly _incomesService: IncomesService = inject(IncomesService);
   private readonly _userService = inject(UserService);
+  private readonly _formValidService = inject(FormValidService);
   public incomeType = signal<TypeIncome[]>([]);
   // public incomes = signal<UserIncome[]>(this._userService.User.userIncomes); //? data del usuario
   public incomes = computed(() => this._userService.User().userIncomes);
 
-  private readonly fb: FormBuilder = inject(FormBuilder);
 
   //? Form para agregar Un Ingreso
+  private readonly fb: FormBuilder = inject(FormBuilder);
   public IncomeForm = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(20)]],
     description: [
@@ -48,12 +52,12 @@ export class IncomesPageComponent implements OnInit {
         Validators.minLength(20),
       ],
     ],
-    amount: [0, [Validators.required, Validators.min(500)]],
-    date: [null as Date | null, []], // acepta tipo Date
-    typeIncome: [0, [Validators.required]],
+    amount: [0, [Validators.required, Validators.min(10)]],
+    date: [null as Date | null, [Validators.required, Validators.nullValidator]], // acepta tipo Date
+    typeIncome: [0, [Validators.required, Validators.nullValidator]],
   });
 
-  // Convertir Date a string YYYY-MM-DD para el input
+  //? Convertir Date a string YYYY-MM-DD para el input
   formatDate(date: Date): string {
     return date.toISOString().substring(0, 10);
   }
@@ -72,11 +76,6 @@ export class IncomesPageComponent implements OnInit {
     });
     //? Obtencion de la data del usuario
   }
-
-  //? Propiedades el componente}
-
-  //? Formularios del Component
-  //TODO: Implementar Formulario de creacion de Ingresos
 
   //? Manejo del form-Component y propiedades
   totalIncomes(): number | undefined {
@@ -99,14 +98,29 @@ export class IncomesPageComponent implements OnInit {
 
   //TODO: Implementar de agregar Ingresos
 
+
+  //? metodo para mostrar mensajes y validar si el formulario es valido
+
+
+ /**
+   * Verifica si un campo es inválido (usa servicio centralizado)
+   */
+  isFieldInvalid(fieldName: string): boolean {
+    return this._formValidService.isFieldInvalid(this.IncomeForm, fieldName);
+  }
+
+  /**
+   * Obtiene el mensaje de error de un campo (usa servicio centralizado)
+   */
+  getFieldError(fieldName: string): string | null {
+    return this._formValidService.getFieldError(this.IncomeForm, fieldName);
+  }
+
   OnSubmit(): void {
     if (!this.IncomeForm.value) {
       return;
     }
 
-    console.log('Formulario enviado:', this.IncomeForm.value);
-    console.log('Tipo de ingreso seleccionado:', this.IncomeForm.value.date);
-    console.log(typeof this.IncomeForm.value.date);
 
     // this._incomesService.createIncome(this.IncomeForm.value).subscribe({
     //   next: (data) => {

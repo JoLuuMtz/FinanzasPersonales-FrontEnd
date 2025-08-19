@@ -35,6 +35,9 @@
               class="mt-1 p-2 border rounded"
               formControlName="name"
             />
+            @if (isFieldInvalid('name')) {
+            <span class="text-red-500 text-xs mt-1">{{ getFieldError('name') }}</span>
+            }
           </label>
 
           <!-- Descripción -->
@@ -46,6 +49,9 @@
               class="mt-1 p-2 border rounded"
               formControlName="description"
             />
+            @if (isFieldInvalid('description')) {
+            <span class="text-red-500 text-xs mt-1">{{ getFieldError('description') }}</span>
+            }
           </label>
 
           <!-- Monto -->
@@ -57,6 +63,9 @@
               formControlName="amount"
               min="0"
             />
+            @if (isFieldInvalid('amount')) {
+            <span class="text-red-500 text-xs mt-1">{{ getFieldError('amount') }}</span>
+            }
           </label>
 
           <!-- Fecha -->
@@ -67,6 +76,9 @@
               class="mt-1 p-2 border rounded"
               formControlName="date"
             />
+            @if (isFieldInvalid('date')) {
+            <span class="text-red-500 text-xs mt-1">{{ getFieldError('date') }}</span>
+            }
           </label>
 
           <!-- Tipo de Ingreso -->
@@ -77,7 +89,7 @@
               class="bg-gray-500 border border-gray-300 text-black text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-gray-500 dark:focus:border-gray-500"
               formControlName="typeIncome"
             >
-              <option value="" disabled selected class="bg-gray-200 text-black">
+              <option [value]="0" disabled selected class="bg-gray-200 text-black">
                 Seleccione un tipo
               </option>
 
@@ -87,17 +99,22 @@
               </option>
               }
             </select>
+            @if (isFieldInvalid('typeIncome')) {
+            <span class="text-red-500 text-xs mt-1">{{ getFieldError('typeIncome') }}</span>
+            }
           </label>
 
           <!-- Botón de enviar (puedes conectar el submit luego en el TS) -->
-          <button
+            <button
             type="submit"
             (click)="closeDialog()"
-            class="cursor-pointer mt-4 p-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
-            [disabled]="!IncomeForm.valid"
-          >
+            class="cursor-pointer mt-4 p-2 bg-black text-white rounded transition-colors
+              hover:bg-gray-800
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black"
+            [disabled]="!IncomeForm.valid || IncomeForm.get('typeIncome')?.value === 0"
+            >
             Agregar
-          </button>
+            </button>
         </div>
       </form>
     </dialog-form>

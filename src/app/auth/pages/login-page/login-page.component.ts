@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import { LoginDTO } from '../../interfaces/login-response.interfaces';
 import sweetalert2 from 'sweetalert2';
+import { FormValidService } from '../../../shared/services/form-valid.service';
 
 @Component({
   selector: 'app-login-page',
@@ -24,6 +25,7 @@ export default class LoginPageComponent implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly swal = sweetalert2;
+  private readonly formValidService = inject(FormValidService);
 
   // Propiedades del componente
   public mostrarAnimacion = signal<boolean>(false);
@@ -66,8 +68,8 @@ export default class LoginPageComponent implements AfterViewInit {
       this.loginForm.markAllAsTouched();
 
       // Verificar errores de servidor usando métodos centralizados
-      if (this.authService.hasAnyServerErrors(this.loginForm)) {
-        const serverErrors = this.authService.getAllServerErrorMessages(
+      if (this.formValidService.hasAnyServerErrors(this.loginForm)) {
+        const serverErrors = this.formValidService.getAllServerErrorMessages(
           this.loginForm
         );
         this.swal.fire({
@@ -126,14 +128,14 @@ export default class LoginPageComponent implements AfterViewInit {
    * Verifica si un campo es inválido (usa servicio centralizado)
    */
   isFieldInvalid(fieldName: string): boolean {
-    return this.authService.isFieldInvalid(this.loginForm, fieldName);
+    return this.formValidService.isFieldInvalid(this.loginForm, fieldName);
   }
 
   /**
    * Obtiene el mensaje de error de un campo (usa servicio centralizado)
    */
   getFieldError(fieldName: string): string | null {
-    return this.authService.getFieldError(this.loginForm, fieldName);
+    return this.formValidService.getFieldError(this.loginForm, fieldName);
   }
 
 
