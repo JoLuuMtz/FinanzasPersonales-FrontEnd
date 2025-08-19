@@ -1,33 +1,31 @@
+
 ### EJECUTATR EL BACK END dotnet run --launch-profile "https"
 📋 Lista de TODOs Pendientes
 
 ✅ Implementar el Estado de autenticacion y token ( listo )
-
+**
 🏠 Módulo Dashboard
 
  Componentes Generales
 
-Dialog
-- Formulario de ingreso/edicion de gastos y ingresos ( reutilizable dialog ) *SpendIncomesForm *
-- formulario de ingreso y edicion de budget (no reutilizable es solo para budget ) budgetForm
-
+- **DashboardHeader**: Encabezado principal del dashboard.
+- **DashboardSidebar**: Barra lateral de navegación.
+- **DashboardContent**: Área principal para mostrar información.
+- **DashboardFooter**: Pie de página del dashboard.
+- **BudgetSummary**: Resumen del presupuesto actual.
+- **Notifications**: Componente para mostrar alertas y notificaciones.
+- **UserProfile**: Visualización y edición de datos del usuario.
+- **Settings**: Configuración general de la aplicación.
 Tablas
-
-- tabla para mostrar el listado de gastos y  ingresos (reutilizable ) history-table
-- tabla para el presupuesto ya que es diferente (no reutilizable solo para el budget) history-table-budget
-
-components
-
-Componente de budget
-budget-Component
-Action-bar (para los historiales de tablas)
-
 
 - Leer y entender que hace este Interceptor  Al momento de implementar el Token para las peticiones protegidas de mi bakend
 
-
-
-
 # Modulo 2
 
- Implementar Http-Only para el almacenar el token en la Cookie y no en el LocalStorage
+//TODO:  Implementar Http-Only para el almacenar el token en la Cookie y no en el LocalStorage (Luego de terminar el primer modulo )
+
+1 //TODO: Implementar servicio de Income Para Agregar Editar y actualizar Incomes  (terminar formulario y validaciones)
+2 //TODO: Implementar el Dialog en el Budget (Formulario etc)
+3 //TODO: Implementar el Table Budget Por Categorias
+4 //TODO: Implementar el
+5 //TODO: Crear un Pipe donde indique que si el numero del total es mayor  que 6  cifras le asigne el valor de M para simplificar

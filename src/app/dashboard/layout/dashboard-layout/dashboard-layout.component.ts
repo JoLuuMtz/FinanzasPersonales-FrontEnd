@@ -20,8 +20,6 @@ export class DashboardLayoutComponent implements OnInit {
   public userName = computed(() => this.currentUser()?.name  || '');
 
   ngOnInit(): void {
-    console.log('Dashboard Layout inicializado');
-    console.log('Usuario actual:', this.currentUser());
-    console.log('Estado de autenticación:', this.isAuthenticated());
+    
   }
 }

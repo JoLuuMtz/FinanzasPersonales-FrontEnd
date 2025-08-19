@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import {
   RegisterDTO,
@@ -17,15 +17,13 @@ import { catchError, retry, tap, timeout } from 'rxjs/operators';
 import { env } from '../../../environment/environmet';
 import { ErrorHandlerService } from '../../shared/services/handle-error.service';
 import { UserData } from '../interfaces/user.interfaces';
-import { AbstractControl, FormGroup } from '@angular/forms';
-
-
+import { FormGroup } from '@angular/forms';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
   private readonly http: HttpClient = inject(HttpClient);
-  private readonly handleError = inject(ErrorHandlerService);
+  private readonly handleError = inject(ErrorHandlerService); //? manejo de errores de la API
   private readonly baseUrl: string = env.BASE_URL;
 
   // Propiedades para monitoreo automático
@@ -63,7 +61,7 @@ export class AuthService {
       try {
         const user: UserData = JSON.parse(userData);
         this.setAuthState(token, refreshToken, user);
-        console.log('Estado de autenticación restaurado desde localStorage');
+
       } catch (error) {
         console.error('Error al parsear datos de usuario:', error);
         this.clearAuthState();
@@ -84,10 +82,7 @@ export class AuthService {
         isAuthenticated ? 'authenticated' : 'unauthenticated'
       );
 
-      console.log(
-        isAuthenticated ? 'Usuario autenticado:' : 'No hay usuario autenticado',
-        user
-      );
+
     });
   }
 
@@ -152,7 +147,7 @@ export class AuthService {
   logOut(): void {
     this.clearAuthState();
     this.stopTokenRefreshMonitoring();
-    console.log('Usuario deslogueado correctamente');
+
   }
 
   // ================================
@@ -172,7 +167,7 @@ export class AuthService {
       .pipe(
         tap((response) => {
           this.updateTokens(response.accessToken, response.refreshToken);
-          console.log('Tokens actualizados exitosamente');
+
         }),
         timeout(10000),
         retry(1),

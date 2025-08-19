@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, CanMatchFn, Route, Router } from '@angular/router';
+import { CanActivateFn, CanMatchFn,  Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 /**
@@ -14,19 +14,15 @@ export const AuthGuard: CanActivateFn = () => {
   const isAuthenticated = authService.IsAutenticated();
   const user = authService.getCurrentUser();
 
-  console.log('AuthGuard - Estado:', {
-    token: !!token,
-    isAuthenticated,
-    hasUser: !!user,
-  });
+
 
   if (!token || !isAuthenticated || !user) {
-    console.log('Acceso denegado - Redirigiendo al login');
+
     router.navigate(['/auth/login']);
     return false;
   }
 
-  console.log('Acceso autorizado');
+
   return true;
 };
 
@@ -42,19 +38,15 @@ export const NoAuthGuard: CanActivateFn = () => {
   const isAuthenticated = authService.IsAutenticated();
   const user = authService.getCurrentUser();
 
-  console.log('NoAuthGuard - Estado:', {
-    token: !!token,
-    isAuthenticated,
-    hasUser: !!user,
-  });
+
 
   // Si ya está autenticado, redirigir al dashboard
   if (token && isAuthenticated && user) {
-    console.log('Usuario ya autenticado - Redirigiendo al dashboard');
+
     router.navigate(['/dashboard']);
     return false;
   }
 
-  console.log('Acceso autorizado a rutas de autenticación');
+
   return true;
 };

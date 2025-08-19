@@ -5,19 +5,15 @@
   </div>
   <!-- contenido -->
   <div class="mx-40">
-
-
-    <!-- <button
-      (click)="toggleVisibility()"
-      class="p-2 bg-black text-white rounded-2xl hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
-    >
-      Agregar
-    </button> -->
-    <nav-list  (showDialog)="toggleVisibility()"> </nav-list>
-
+    <nav-list (showDialog)="toggleVisibility()" [TotalIncome]="totalIncomes()">
+    </nav-list>
 
     <div class="mt-4">
-      <history-table></history-table>
+      <history-table
+        [Data]="incomes()"
+        (editIncome)="OnEditIncomeById($event)"
+        (deleteIncome)="OnDeteleid($event)"
+      ></history-table>
     </div>
 
     <dialog-form
@@ -45,7 +41,7 @@
           <label class="flex flex-col font-semibold text-sm">
             Descripción
             <input
-            datepicker
+              title="x"
               type="text"
               class="mt-1 p-2 border rounded"
               formControlName="description"
@@ -78,7 +74,7 @@
             Tipo de Ingreso
 
             <select
-                class="bg-gray-500 border border-gray-300 text-black text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-gray-500 dark:focus:border-gray-500"
+              class="bg-gray-500 border border-gray-300 text-black text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-gray-500 dark:focus:border-gray-500"
               formControlName="typeIncome"
             >
               <option value="" disabled selected class="bg-gray-200 text-black">
@@ -86,29 +82,22 @@
               </option>
 
               @for (type of incomeType(); track type.idTypeIncomes) {
-              <option
-                [value]="type.idTypeIncomes"
-
-              >
+              <option [value]="type.idTypeIncomes">
                 {{ type.name | titlecase }}
               </option>
               }
             </select>
-
-
-
           </label>
 
           <!-- Botón de enviar (puedes conectar el submit luego en el TS) -->
-            <button
+          <button
             type="submit"
             (click)="closeDialog()"
             class="cursor-pointer mt-4 p-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
             [disabled]="!IncomeForm.valid"
-            >
+          >
             Agregar
           </button>
-
         </div>
       </form>
     </dialog-form>
