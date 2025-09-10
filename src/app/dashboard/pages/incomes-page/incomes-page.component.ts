@@ -29,7 +29,6 @@ import { FormValidService } from '../../../shared/services/form-valid.service';
   styleUrl: './incomes-page.component.css',
 })
 export class IncomesPageComponent implements OnInit {
-
   //? Propiedades el componente
   public isVisible: boolean = false;
   private readonly _incomesService: IncomesService = inject(IncomesService);
@@ -37,8 +36,8 @@ export class IncomesPageComponent implements OnInit {
   private readonly _formValidService = inject(FormValidService);
   public incomeType = signal<TypeIncome[]>([]);
   // public incomes = signal<UserIncome[]>(this._userService.User.userIncomes); //? data del usuario
-  public incomes = computed(() => this._userService.User().userIncomes);
-
+  // public incomes = computed(() => this._userService.User().userIncomes); //? data del usuario
+  public incomes = computed(() => this._userService.User()?.userIncomes || []); //? data del usuario
 
   //? Form para agregar Un Ingreso
   private readonly fb: FormBuilder = inject(FormBuilder);
@@ -53,7 +52,10 @@ export class IncomesPageComponent implements OnInit {
       ],
     ],
     amount: [0, [Validators.required, Validators.min(10)]],
-    date: [null as Date | null, [Validators.required, Validators.nullValidator]], // acepta tipo Date
+    date: [
+      null as Date | null,
+      [Validators.required, Validators.nullValidator],
+    ], // acepta tipo Date
     typeIncome: [0, [Validators.required, Validators.nullValidator]],
   });
 
@@ -79,11 +81,9 @@ export class IncomesPageComponent implements OnInit {
 
   //? Manejo del form-Component y propiedades
   totalIncomes(): number | undefined {
-    const user = this._userService.User() as UserData; //? data del usuario
+    const user = this._userService.User(); //? data del usuario
     return user.userIncomes?.reduce(
-      (total, income) => total + income.amount,
-      0
-    );
+      (total, income) => total + income.amount, 0);
   }
   public toggleVisibility(): void {
     this.isVisible = !this.isVisible;
@@ -98,11 +98,9 @@ export class IncomesPageComponent implements OnInit {
 
   //TODO: Implementar de agregar Ingresos
 
-
   //? metodo para mostrar mensajes y validar si el formulario es valido
 
-
- /**
+  /**
    * Verifica si un campo es inválido (usa servicio centralizado)
    */
   isFieldInvalid(fieldName: string): boolean {
@@ -119,19 +117,12 @@ export class IncomesPageComponent implements OnInit {
   OnSubmit(): void {
     if (!this.IncomeForm.value) {
       return;
+
+
+
+
+
     }
-
-
-    // this._incomesService.createIncome(this.IncomeForm.value).subscribe({
-    //   next: (data) => {
-    //     console.log('Ingreso creado exitosamente:', data);
-    //     this.closeDialog();
-    //     this.IncomeForm.reset();
-    //   },
-    //   error: (err) => {
-    //     console.error('Error al crear el ingreso:', err);
-    //   },
-    // });
   }
 
   //TODO: Implementar metodo de eliminacion de Ingresos
@@ -144,7 +135,7 @@ export class IncomesPageComponent implements OnInit {
     console.log('Editar ingreso con ID:', id);
     //? Buscar el ingreso por ID y cargar sus datos en el formulario
     const incomeToEdit = this.incomes().find(
-      (income) => income.idIncome === id
+      (income  ) => income.idIncome === id
     );
     if (!incomeToEdit) {
       console.error('No hay Ingresos con ese Id', id);

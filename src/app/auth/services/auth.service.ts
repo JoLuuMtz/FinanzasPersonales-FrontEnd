@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import {
   RegisterDTO,
-  RegisterResponse,
+
 } from '../interfaces/register.interface';
 import {
   LoginDTO,
@@ -10,14 +10,14 @@ import {
 } from '../interfaces/login-response.interfaces';
 import {
   RefreshTokenResponse,
-  RefreshTokenDTO,
+
 } from '../interfaces/refresh-token.interface';
 import { Observable, throwError, interval, Subscription } from 'rxjs';
 import { catchError, retry, tap, timeout } from 'rxjs/operators';
 import { env } from '../../../environment/environmet';
 import { ErrorHandlerService } from '../../shared/services/handle-error.service';
 import { UserData } from '../interfaces/user.interfaces';
-import { FormGroup } from '@angular/forms';
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -32,7 +32,7 @@ export class AuthService {
   private readonly REFRESH_THRESHOLD = 5; // 5 minutos antes de expirar
 
   // Signals
-  private currentUser = signal<UserData | null>(null);
+  currentUser = signal<UserData | null>(null);
   public IsAutenticated = signal<boolean>(false);
   public userToken = signal<string | null>(null);
   public refreshToken = signal<string | null>(null);
@@ -41,7 +41,7 @@ export class AuthService {
   );
 
   // Computed
-  public getCurrentUser = computed(() => this.currentUser());
+  // public getCurrentUser = computed(() => this.currentUser());
 
   constructor() {
     this.initializeAuthState();
@@ -73,7 +73,7 @@ export class AuthService {
 
   private setupAuthEffect(): void {
     effect(() => {
-      const user = this.getCurrentUser();
+      const user = this.currentUser()
       const token = this.userToken();
       const isAuthenticated = !!(user && token);
 
@@ -286,7 +286,7 @@ export class AuthService {
   }
 
   private logAuthInfo(): void {
-    console.log(`Usuario autenticado: ${this.getCurrentUser()}`);
+    console.log(`Usuario autenticado: ${this.currentUser() }`);
     console.log(
       `Estado: ${this.userAuthenticatedStatus()}, Token: ${this.userToken()}, Autenticado: ${this.IsAutenticated()}`
     );
