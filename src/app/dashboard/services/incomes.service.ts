@@ -2,22 +2,27 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { env } from '../../../environment/environmet';
 import { TypeIncome } from '../../auth/interfaces/user.interfaces';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, Observable, of, take, tap } from 'rxjs';
 import { IncomeDTO } from '../interfaces/Incomes.interface';
+import { UserService } from '../../user/services/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class IncomesService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = env.BASE_URL;
+  private readonly _userService = inject(UserService);
 
   constructor() {}
 
   //? Obteiene la data de tipos de Ingresos
-  getIncomeType(): Observable<TypeIncome[] | undefined> {
+  getIncomeType(): Observable<TypeIncome[] | null> {
     return this.http.get<TypeIncome[]>(`${this.baseUrl}/Incomes/types`).pipe(
-      catchError(() => {
-        return of(undefined);
-      })
+      tap({
+        next: (data) => console.info('Tipos de ingreso obtenidos:', data),
+        error: (error) =>
+          console.warn('Error al obtener tipos de ingreso:', error),
+      }),
+      catchError(() => of(null))
     );
   }
 
@@ -30,6 +35,13 @@ export class IncomesService {
           next: (income) => console.info('Ingreso agregado:', income),
           error: (error) => console.warn('Error al agregar ingreso:', error),
         }),
+        tap(() => {
+          this._userService
+            .getUserById(this._userService.User()?.idUser || 0)
+            .pipe(take(1)) // solo se ejecuta una vez 
+            .subscribe(); // se susbcribe una sola vez 
+        }),
+
         catchError(() => of(null))
       );
   }

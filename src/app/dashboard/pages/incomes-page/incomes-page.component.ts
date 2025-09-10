@@ -38,6 +38,7 @@ export class IncomesPageComponent implements OnInit {
   // public incomes = signal<UserIncome[]>(this._userService.User.userIncomes); //? data del usuario
   // public incomes = computed(() => this._userService.User().userIncomes); //? data del usuario
   public incomes = computed(() => this._userService.User()?.userIncomes || []); //? data del usuario
+ 
 
   //? Form para agregar Un Ingreso
   private readonly fb: FormBuilder = inject(FormBuilder);
@@ -64,16 +65,21 @@ export class IncomesPageComponent implements OnInit {
     return date.toISOString().substring(0, 10);
   }
 
+  //? Propiedad para indicar si está cargando los tipos de ingreso
+  public loadingTypes = signal<boolean>(true);
+
   ngOnInit(): void {
     //? Obtencion de la data del TypeIncome
     this._incomesService.getIncomeType().subscribe({
-      next: (data) => {
-        if (data) {
-          this.incomeType.set(data);
+      next: (types) => {
+        if (types) {
+          this.incomeType.set(types);
         }
+        this.loadingTypes.set(false); // Finaliza carga
       },
-      error: (err) => {
-        console.error('Error al obtener los tipos de ingresos:', err);
+      error: () => {
+        this.loadingTypes.set(false); // También marcar como finalizado en caso de error
+        // Mostrar mensaje de error si es necesario
       },
     });
     //? Obtencion de la data del usuario
@@ -83,7 +89,9 @@ export class IncomesPageComponent implements OnInit {
   totalIncomes(): number | undefined {
     const user = this._userService.User(); //? data del usuario
     return user.userIncomes?.reduce(
-      (total, income) => total + income.amount, 0);
+      (total, income) => total + income.amount,
+      0
+    );
   }
   public toggleVisibility(): void {
     this.isVisible = !this.isVisible;
@@ -117,11 +125,6 @@ export class IncomesPageComponent implements OnInit {
   OnSubmit(): void {
     if (!this.IncomeForm.value) {
       return;
-
-
-
-
-
     }
   }
 
@@ -135,7 +138,7 @@ export class IncomesPageComponent implements OnInit {
     console.log('Editar ingreso con ID:', id);
     //? Buscar el ingreso por ID y cargar sus datos en el formulario
     const incomeToEdit = this.incomes().find(
-      (income  ) => income.idIncome === id
+      (income) => income.idIncome === id
     );
     if (!incomeToEdit) {
       console.error('No hay Ingresos con ese Id', id);

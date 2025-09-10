@@ -12,7 +12,7 @@ export const AuthGuard: CanActivateFn = () => {
 
   const token = authService.userToken();
   const isAuthenticated = authService.IsAutenticated();
-  const user = authService.getCurrentUser();
+  const user = authService.currentUser();
 
 
 
@@ -36,7 +36,7 @@ export const NoAuthGuard: CanActivateFn = () => {
 
   const token = authService.userToken();
   const isAuthenticated = authService.IsAutenticated();
-  const user = authService.getCurrentUser();
+  const user = authService.currentUser();
 
 
 

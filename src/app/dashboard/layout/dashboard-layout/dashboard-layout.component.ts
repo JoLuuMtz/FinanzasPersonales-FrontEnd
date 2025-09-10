@@ -15,11 +15,11 @@ export class DashboardLayoutComponent implements OnInit {
   private readonly authService = inject(AuthService);
 
   // Computed properties que se actualizan automáticamente
-  public currentUser = computed(() => this.authService.getCurrentUser());
+  public currentUser = computed(() => this.authService.currentUser());
   public isAuthenticated = computed(() => this.authService.IsAutenticated());
   public userName = computed(() => this.currentUser()?.name  || '');
 
   ngOnInit(): void {
-    
+
   }
 }

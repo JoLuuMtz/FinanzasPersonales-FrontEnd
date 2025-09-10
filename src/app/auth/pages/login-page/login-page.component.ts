@@ -99,7 +99,7 @@ export default class LoginPageComponent implements AfterViewInit {
             showConfirmButton: false,
           })
           .then(() => {
-            console.log("Login-component", this.authService.getCurrentUser());
+            console.log("Login-component", this.authService.currentUser());
             this.router.navigate(['/dashboard']);
           });
       },

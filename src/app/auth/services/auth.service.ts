@@ -33,6 +33,7 @@ export class AuthService {
 
   // Signals
   currentUser = signal<UserData | null>(null);
+
   public IsAutenticated = signal<boolean>(false);
   public userToken = signal<string | null>(null);
   public refreshToken = signal<string | null>(null);
@@ -40,8 +41,9 @@ export class AuthService {
     'unauthenticated'
   );
 
-  // Computed
-  // public getCurrentUser = computed(() => this.currentUser());
+
+  //TODO: Actualizar la data cuando se haga una operacion en los diferentes servicios
+  
 
   constructor() {
     this.initializeAuthState();
@@ -72,6 +74,7 @@ export class AuthService {
   }
 
   private setupAuthEffect(): void {
+
     effect(() => {
       const user = this.currentUser()
       const token = this.userToken();

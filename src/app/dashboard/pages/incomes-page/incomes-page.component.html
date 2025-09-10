@@ -85,6 +85,18 @@
           <label class="flex flex-col font-semibold text-sm">
             Tipo de Ingreso
 
+            @if (loadingTypes()) {
+            <!-- Indicador de carga -->
+            <div class="flex items-center justify-center bg-gray-100 rounded-lg p-2 animate-pulse">
+              <svg class="w-5 h-5 text-gray-500 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span class="ml-2 text-gray-600">Cargando tipos...</span>
+            </div>
+          }
+            @else {
+            <!-- Select normal cuando ya hay datos -->
             <select
               class="bg-gray-500 border border-gray-300 text-black text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-gray-500 dark:focus:border-gray-500"
               formControlName="typeIncome"
@@ -99,6 +111,8 @@
               </option>
               }
             </select>
+            }
+
             @if (isFieldInvalid('typeIncome')) {
             <span class="text-red-500 text-xs mt-1">{{ getFieldError('typeIncome') }}</span>
             }
