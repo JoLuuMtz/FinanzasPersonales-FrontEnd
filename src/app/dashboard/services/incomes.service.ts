@@ -38,8 +38,8 @@ export class IncomesService {
         tap(() => {
           this._userService
             .getUserById(this._userService.User()?.idUser || 0)
-            .pipe(take(1)) // solo se ejecuta una vez 
-            .subscribe(); // se susbcribe una sola vez 
+            .pipe(take(1)) // solo se ejecuta una vez
+            .subscribe(); // se susbcribe una sola vez
         }),
 
         catchError(() => of(null))

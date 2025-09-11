@@ -21,7 +21,7 @@ export class UserService {
 
   getUserById(id: number): Observable<UserData | null> {
     id = this.User()?.idUser || 0;
-    return this._http.get<UserData>(`${this.baseUrl}data/by/id?id=${id}'`).pipe(
+    return this._http.get<UserData>(`${this.baseUrl}/data/by/id?id=${id}`).pipe(
       tap((res: UserData) => {
         if (!res) {
           return;
@@ -32,8 +32,8 @@ export class UserService {
     );
   }
 
-  // Todo: Implementar Operaciones al servicio de usuarios... CRUD ETC
+  // TODO: Implementar Operaciones al servicio de usuarios... CRUD ETC
 
 
-  
+
 }

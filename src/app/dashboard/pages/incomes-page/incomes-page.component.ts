@@ -14,6 +14,7 @@ import { HistoryTableComponent } from '../../components/history-table/history-ta
 import { UserService } from '../../../user/services/user.service';
 import { NavListComponent } from '../../components/nav-list/nav-list.component';
 import { FormValidService } from '../../../shared/services/form-valid.service';
+import { IncomeDTO } from '../../interfaces/Incomes.interface';
 
 @Component({
   selector: 'app-incomes-page',
@@ -38,7 +39,6 @@ export class IncomesPageComponent implements OnInit {
   // public incomes = signal<UserIncome[]>(this._userService.User.userIncomes); //? data del usuario
   // public incomes = computed(() => this._userService.User().userIncomes); //? data del usuario
   public incomes = computed(() => this._userService.User()?.userIncomes || []); //? data del usuario
- 
 
   //? Form para agregar Un Ingreso
   private readonly fb: FormBuilder = inject(FormBuilder);
@@ -104,8 +104,6 @@ export class IncomesPageComponent implements OnInit {
     this.isVisible = false;
   }
 
-  //TODO: Implementar de agregar Ingresos
-
   //? metodo para mostrar mensajes y validar si el formulario es valido
 
   /**
@@ -123,9 +121,33 @@ export class IncomesPageComponent implements OnInit {
   }
 
   OnSubmit(): void {
-    if (!this.IncomeForm.value) {
+    if (!this.IncomeForm.valid) {
       return;
     }
+    
+    const formValue = this.IncomeForm.value;
+    
+    // Crear el DTO con la fecha correctamente formateada
+    const incomeDTO: IncomeDTO = {
+      name: formValue.name!,
+      description: formValue.description!,
+      amount: formValue.amount!,
+      date: new Date(formValue.date!), // Asegurar que sea un objeto Date válido
+      idTypeIncomes: formValue.typeIncome!
+    };
+    
+    console.log('DTO a enviar:', incomeDTO);
+    
+    this._incomesService.addNewIncome(incomeDTO).subscribe({
+      next: (income) => {
+        if (income) {
+          console.info('Ingreso agregado:', income);
+          this.closeDialog();
+          this.IncomeForm.reset();
+        }
+      },
+      error: (error) => console.warn('Error al agregar ingreso:', error),
+    });
   }
 
   //TODO: Implementar metodo de eliminacion de Ingresos
