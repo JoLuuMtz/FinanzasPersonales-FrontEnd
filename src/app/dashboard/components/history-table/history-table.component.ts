@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 
@@ -8,7 +9,7 @@ import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
   styleUrl: './history-table.component.css',
 })
 export class HistoryTableComponent {
-  @Input() Data: any[] = []; //? para mostrar los datos de la tabla
+  @Input() Data: any = [] //? para mostrar los datos de la tabla
   @Output() deleteIncome = new EventEmitter<number>(); //?Emite el id del ingreso a eliminar
   @Output() editIncome = new EventEmitter<number>(); //?emite el id del ingreso a editar
 

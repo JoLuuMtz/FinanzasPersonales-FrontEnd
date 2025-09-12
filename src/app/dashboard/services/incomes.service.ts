@@ -3,7 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { env } from '../../../environment/environmet';
 import { TypeIncome } from '../../auth/interfaces/user.interfaces';
 import { catchError, Observable, of, take, tap } from 'rxjs';
-import { IncomeDTO } from '../interfaces/Incomes.interface';
+import { IncomeDTO, IncomeUpdateDTO } from '../interfaces/Incomes.interface';
 import { UserService } from '../../user/services/user.service';
 
 @Injectable({ providedIn: 'root' })
@@ -27,6 +27,7 @@ export class IncomesService {
   }
 
   //? Add Income
+
   addNewIncome(newIncome: IncomeDTO): Observable<IncomeDTO | null> {
     return this.http
       .post<IncomeDTO>(`${this.baseUrl}/Incomes/create`, newIncome)
@@ -36,12 +37,8 @@ export class IncomesService {
           error: (error) => console.warn('Error al agregar ingreso:', error),
         }),
         tap(() => {
-          this._userService
-            .getUserById(this._userService.User()?.idUser || 0)
-            .pipe(take(1)) // solo se ejecuta una vez
-            .subscribe(); // se susbcribe una sola vez
+          this._userService.refreshCurrentUserData();
         }),
-
         catchError(() => of(null))
       );
   }
@@ -49,7 +46,7 @@ export class IncomesService {
   //?=  Update Income
   UpdateIncome(
     incomeId: number,
-    updatedIncome: IncomeDTO
+    updatedIncome: IncomeUpdateDTO
   ): Observable<IncomeDTO | null> {
     return this.http
       .put<IncomeDTO>(
@@ -73,7 +70,7 @@ export class IncomesService {
         tap({
           next: () => {
             console.info('Ingreso eliminado');
-            return true;
+            this._userService.refreshCurrentUserData();
           },
           error: (error) => console.warn('Error al eliminar ingreso:', error),
         }),

@@ -55,6 +55,7 @@ export class AuthService {
   // ================================
 
   private initializeAuthState(): void {
+
     const token = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
     const userData = localStorage.getItem('User');
@@ -76,8 +77,10 @@ export class AuthService {
   private setupAuthEffect(): void {
 
     effect(() => {
+    
       const user = this.currentUser()
       const token = this.userToken();
+      const refreshToken = this.refreshToken();
       const isAuthenticated = !!(user && token);
 
       this.IsAutenticated.set(isAuthenticated);
@@ -85,6 +88,10 @@ export class AuthService {
         isAuthenticated ? 'authenticated' : 'unauthenticated'
       );
 
+      // Actualizar localStorage cuando cambie el usuario
+      if (isAuthenticated && user && token) {
+        this.saveToLocalStorage(token, refreshToken || '', user);
+      }
 
     });
   }
@@ -100,6 +107,8 @@ export class AuthService {
     this.IsAutenticated.set(true);
     this.userAuthenticatedStatus.set('authenticated');
   }
+
+
 
   private clearAuthState(): void {
     this.currentUser.set(null);
@@ -139,7 +148,7 @@ export class AuthService {
             user
           );
           this.restartTokenRefreshMonitoring();
-          this.logAuthInfo();
+          // this.logAuthInfo();
         }),
         timeout(10000),
         retry(2),
@@ -288,10 +297,4 @@ export class AuthService {
     localStorage.setItem('User', JSON.stringify(user));
   }
 
-  private logAuthInfo(): void {
-    console.log(`Usuario autenticado: ${this.currentUser() }`);
-    console.log(
-      `Estado: ${this.userAuthenticatedStatus()}, Token: ${this.userToken()}, Autenticado: ${this.IsAutenticated()}`
-    );
-  }
 }

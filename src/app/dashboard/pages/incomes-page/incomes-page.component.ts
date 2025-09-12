@@ -15,6 +15,7 @@ import { UserService } from '../../../user/services/user.service';
 import { NavListComponent } from '../../components/nav-list/nav-list.component';
 import { FormValidService } from '../../../shared/services/form-valid.service';
 import { IncomeDTO } from '../../interfaces/Incomes.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-incomes-page',
@@ -35,6 +36,7 @@ export class IncomesPageComponent implements OnInit {
   private readonly _incomesService: IncomesService = inject(IncomesService);
   private readonly _userService = inject(UserService);
   private readonly _formValidService = inject(FormValidService);
+  private readonly sw = Swal;
   public incomeType = signal<TypeIncome[]>([]);
   // public incomes = signal<UserIncome[]>(this._userService.User.userIncomes); //? data del usuario
   // public incomes = computed(() => this._userService.User().userIncomes); //? data del usuario
@@ -124,24 +126,31 @@ export class IncomesPageComponent implements OnInit {
     if (!this.IncomeForm.valid) {
       return;
     }
-    
+
     const formValue = this.IncomeForm.value;
-    
-    // Crear el DTO con la fecha correctamente formateada
+    //Mapea el formValue para que coincida con el IncomeDTO
     const incomeDTO: IncomeDTO = {
       name: formValue.name!,
       description: formValue.description!,
       amount: formValue.amount!,
       date: new Date(formValue.date!), // Asegurar que sea un objeto Date válido
-      idTypeIncomes: formValue.typeIncome!
+      idTypeIncomes: formValue.typeIncome!,
     };
-    
+
     console.log('DTO a enviar:', incomeDTO);
-    
+
     this._incomesService.addNewIncome(incomeDTO).subscribe({
       next: (income) => {
         if (income) {
-          console.info('Ingreso agregado:', income);
+          console.info('Ingreso agregado exitosamente:', income);
+          // Mostrar alerta de éxito con SweetAlert
+          this.sw.fire({
+            title: '¡Éxito!',
+            text: 'El ingreso se ha agregado correctamente',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
+
           this.closeDialog();
           this.IncomeForm.reset();
         }
@@ -152,7 +161,16 @@ export class IncomesPageComponent implements OnInit {
 
   //TODO: Implementar metodo de eliminacion de Ingresos
   OnDeteleid(id: number) {
-    console.log('Eliminar ingreso con ID:', id);
+    this._incomesService.deleteIncomeByID(id).subscribe({
+      next: (income) => {
+        if (income) {
+          console.info('Ingreso eliminado:', income);
+          this.closeDialog();
+          this.IncomeForm.reset();
+        }
+      },
+      error: (error) => console.warn('Error al eliminar ingreso:', error),
+    });
   }
 
   //TODO: Implementar metodos de edicion de Ingresos
