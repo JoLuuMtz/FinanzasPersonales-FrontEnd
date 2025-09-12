@@ -1,26 +1,35 @@
 <div class="overflow-x-auto">
-  <table class="min-w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 rounded-xl shadow-2xl border border-gray-700">
-    <thead>
-       <tr>
-        <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700">#</th>
-        <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700">Nombre</th>
-        <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700">Descripción</th>
-        <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700">Fecha</th>
-        <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700">Monto</th>
-        <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700">Tipo</th>
-        <th class="px-4 py-3 text-white bg-black border-b border-gray-700">Accion </th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (data of Data ; track $index) {
-      <tr class="hover:bg-gray-800 transition-colors duration-200">
-        <td class="px-4 py-3 text-white text-center border-b border-gray-700">{{ $index + 1 }}</td>
-        <td class="px-4 py-3 text-white text-center border-b border-gray-700 font-medium">{{ data.name | titlecase }}</td>
-        <td class="px-4 py-3 text-white text-center border-b border-gray-700">{{ data.description | titlecase }}</td>
-        <td class="px-4 py-3 text-white text-center border-b border-gray-700">{{ data.date | date:'dd/MM/yyyy' }}</td>
-        <td class="px-4 py-3 text-green-400 text-center border-b border-gray-700 font-semibold">{{ data.amount | currency:'COP ':'symbol':'1.0-0'}}</td>
-        <td class="px-4 py-3 text-indigo-300 text-center border-b border-gray-700 font-semibold">{{ data.typeIncome.name | titlecase }}</td>
-        <td class="px-4 py-3 text-center border-b border-gray-700">
+  <div class="bg-gradient-to-br from-gray-900 via-black to-gray-800 rounded-xl shadow-2xl border border-gray-700">
+    <!-- Header fijo -->
+    <div class="overflow-hidden rounded-t-xl">
+      <table class="min-w-full">
+        <thead>
+          <tr>
+            <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700 w-16">#</th>
+            <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700 w-32">Nombre</th>
+            <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700 w-48">Descripción</th>
+            <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700 w-32">Fecha</th>
+            <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700 w-32">Monto</th>
+            <th class="px-4 py-3 text-white uppercase tracking-wider text-sm font-semibold bg-black border-b border-gray-700 w-24">Tipo</th>
+            <th class="px-4 py-3 text-white bg-black border-b border-gray-700 w-32">Accion</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    
+    <!-- Cuerpo con scroll -->
+    <div class="overflow-y-auto max-h-96">
+      <table class="min-w-full">
+        <tbody>
+          @for (data of Data ; track $index) {
+          <tr class="hover:bg-gray-800 transition-colors duration-200">
+            <td class="px-4 py-3 text-white text-center border-b border-gray-700 w-16">{{ $index + 1 }}</td>
+            <td class="px-4 py-3 text-white text-center border-b border-gray-700 font-medium w-32">{{ data.name | titlecase }}</td>
+            <td class="px-4 py-3 text-white text-center border-b border-gray-700 w-48">{{ data.description | titlecase }}</td>
+            <td class="px-4 py-3 text-white text-center border-b border-gray-700 w-32">{{ data.date | date:'dd/MM/yyyy' }}</td>
+            <td class="px-4 py-3 text-green-400 text-center border-b border-gray-700 font-semibold w-32">{{ data.amount | currency:'COP ':'symbol':'1.0-0'}}</td>
+            <td class="px-4 py-3 text-indigo-300 text-center border-b border-gray-700 font-semibold w-24">{{ data.typeIncome.name | titlecase }}</td>
+            <td class="px-4 py-3 text-center border-b border-gray-700 w-32">
           <div class="flex gap-2 justify-center items-center">
             <!-- Botón Editar -->
             <button
@@ -67,7 +76,9 @@
           </div>
         </td>
       </tr>
-      }
-    </tbody>
-  </table>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
