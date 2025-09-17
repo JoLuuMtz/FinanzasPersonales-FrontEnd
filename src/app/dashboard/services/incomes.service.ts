@@ -54,9 +54,9 @@ export class IncomesService {
         updatedIncome
       )
       .pipe(
-        tap({
-          next: (income) => console.info('Ingreso actualizado:', income),
-          error: (error) => console.warn('Error al actualizar ingreso:', error),
+        tap(() => {
+          console.log('Se actualizo el income ');
+          this._userService.refreshCurrentUserData();
         }),
         catchError(() => of(null))
       );

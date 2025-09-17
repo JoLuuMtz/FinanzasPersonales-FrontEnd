@@ -14,7 +14,7 @@ import { HistoryTableComponent } from '../../components/history-table/history-ta
 import { UserService } from '../../../user/services/user.service';
 import { NavListComponent } from '../../components/nav-list/nav-list.component';
 import { FormValidService } from '../../../shared/services/form-valid.service';
-import { IncomeDTO } from '../../interfaces/Incomes.interface';
+import { IncomeDTO, IncomeUpdateDTO } from '../../interfaces/Incomes.interface';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -56,9 +56,9 @@ export class IncomesPageComponent implements OnInit {
     ],
     amount: [0, [Validators.required, Validators.min(10)]],
     date: [
-      null as Date | null,
+      null as Date | string | null,
       [Validators.required, Validators.nullValidator],
-    ], // acepta tipo Date
+    ], // acepta tipo Date o string para inputs HTML
     typeIncome: [0, [Validators.required, Validators.nullValidator]],
   });
 
@@ -69,6 +69,10 @@ export class IncomesPageComponent implements OnInit {
 
   //? Propiedad para indicar si está cargando los tipos de ingreso
   public loadingTypes = signal<boolean>(true);
+
+  //? Propiedades para controlar si estamos editando o agregando
+  public isEditMode: boolean = false;
+  public currentEditingId: number | null = null;
 
   ngOnInit(): void {
     //? Obtencion de la data del TypeIncome
@@ -97,13 +101,27 @@ export class IncomesPageComponent implements OnInit {
   }
   public toggleVisibility(): void {
     this.isVisible = !this.isVisible;
+    // Si se está abriendo el diálogo, asegurar que esté en modo agregar
+    if (this.isVisible) {
+      this.setAddMode();
+    }
   }
+
   openDialog() {
     this.isVisible = true;
   }
 
   closeDialog() {
     this.isVisible = false;
+    // Resetear el modo de edición al cerrar
+    this.isEditMode = false;
+    this.currentEditingId = null;
+  }
+
+  private setAddMode(): void {
+    this.isEditMode = false;
+    this.currentEditingId = null;
+    this.IncomeForm.reset();
   }
 
   //? metodo para mostrar mensajes y validar si el formulario es valido
@@ -127,6 +145,14 @@ export class IncomesPageComponent implements OnInit {
       return;
     }
 
+    if (this.isEditMode) {
+      this.executeUpdate();
+    } else {
+      this.addNewIncome();
+    }
+  }
+
+  private addNewIncome(): void {
     const formValue = this.IncomeForm.value;
     //Mapea el formValue para que coincida con el IncomeDTO
     const incomeDTO: IncomeDTO = {
@@ -151,20 +177,26 @@ export class IncomesPageComponent implements OnInit {
             confirmButtonText: 'OK',
           });
 
-          this.closeDialog();
-          this.IncomeForm.reset();
+          this.resetAndCloseForm();
         }
       },
       error: (error) => console.warn('Error al agregar ingreso:', error),
     });
   }
 
-  //TODO: Implementar metodo de eliminacion de Ingresos
+
   OnDeteleid(id: number) {
     this._incomesService.deleteIncomeByID(id).subscribe({
-      next: (income) => {
-        if (income) {
-          console.info('Ingreso eliminado:', income);
+      next: (result) => {
+        if (result) {
+          console.info('Ingreso eliminado exitosamente');
+          // Mostrar alerta de éxito con SweetAlert
+          this.sw.fire({
+            title: '¡Éxito!',
+            text: 'El ingreso se ha eliminado correctamente',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
           this.closeDialog();
           this.IncomeForm.reset();
         }
@@ -173,24 +205,96 @@ export class IncomesPageComponent implements OnInit {
     });
   }
 
-  //TODO: Implementar metodos de edicion de Ingresos
   OnEditIncomeById(id: number) {
     console.log('Editar ingreso con ID:', id);
-    //? Buscar el ingreso por ID y cargar sus datos en el formulario
+    
+    // Buscar el ingreso por ID y cargar sus datos en el formulario
     const incomeToEdit = this.incomes().find(
       (income) => income.idIncome === id
     );
+    
     if (!incomeToEdit) {
       console.error('No hay Ingresos con ese Id', id);
+      this.sw.fire({
+        title: 'Error',
+        text: 'No se encontró el ingreso a editar',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
       return;
     }
+
+    // Establecer modo de edición y configurar el formulario
+    this.setupEditMode(id, incomeToEdit);
+    this.openDialog();
+  }
+
+  private setupEditMode(id: number, incomeToEdit: any): void {
+    // Establecer modo de edición
+    this.isEditMode = true;
+    this.currentEditingId = id;
+
+    // Convertir la fecha al formato correcto para el input date (YYYY-MM-DD)
+    const dateForInput = this.formatDate(new Date(incomeToEdit.date));
+
+    // Cargar datos en el formulario
     this.IncomeForm.patchValue({
       name: incomeToEdit.name,
       description: incomeToEdit.description,
       amount: incomeToEdit.amount,
-      date: new Date(), // Establece la fecha de hoy
+      date: dateForInput,
       typeIncome: incomeToEdit.typeIncome.idTypeIncomes,
     });
-    this.openDialog();
+
+    console.log('Formulario cargado para edición:', this.IncomeForm.value);
+  }
+
+  private executeUpdate(): void {
+    if (!this.currentEditingId || !this.IncomeForm.valid) {
+      console.error('Formulario inválido o ID faltante para actualizar');
+      return;
+    }
+
+    const formValue = this.IncomeForm.value;
+    const incomeUpdateDTO: IncomeUpdateDTO = {
+      name: formValue.name!,
+      description: formValue.description!,
+      amount: formValue.amount!,
+      date: new Date(formValue.date!),
+    };
+
+    console.log('Actualizando ingreso:', incomeUpdateDTO);
+
+    this._incomesService.UpdateIncome(this.currentEditingId, incomeUpdateDTO).subscribe({
+      next: (income: IncomeDTO | null) => {
+        if (income) {
+          console.info('Ingreso actualizado exitosamente:', income);
+          this.sw.fire({
+            title: '¡Éxito!',
+            text: 'El ingreso se ha actualizado correctamente',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
+          this.resetAndCloseForm();
+        }
+      },
+      error: (error: any) => {
+        console.warn('Error al actualizar ingreso:', error);
+        this.sw.fire({
+          title: 'Error',
+          text: 'No se pudo actualizar el ingreso. Intenta nuevamente.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      },
+    });
+  }
+
+  private resetAndCloseForm(): void {
+    this.closeDialog();
+    this.IncomeForm.reset();
+    this.isEditMode = false;
+    this.currentEditingId = null;
+    console.log('Formulario reseteado y diálogo cerrado');
   }
 }
