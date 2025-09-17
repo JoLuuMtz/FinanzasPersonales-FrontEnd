@@ -38,8 +38,7 @@ export class IncomesPageComponent implements OnInit {
   private readonly _formValidService = inject(FormValidService);
   private readonly sw = Swal;
   public incomeType = signal<TypeIncome[]>([]);
-  // public incomes = signal<UserIncome[]>(this._userService.User.userIncomes); //? data del usuario
-  // public incomes = computed(() => this._userService.User().userIncomes); //? data del usuario
+
   public incomes = computed(() => this._userService.User()?.userIncomes || []); //? data del usuario
 
   //? Form para agregar Un Ingreso
@@ -71,8 +70,8 @@ export class IncomesPageComponent implements OnInit {
   public loadingTypes = signal<boolean>(true);
 
   //? Propiedades para controlar si estamos editando o agregando
-  public isEditMode: boolean = false;
-  public currentEditingId: number | null = null;
+  public isEditMode: boolean = false; // si es update true si es add false
+  public currentEditingId: number | null = null; // id del ingreso que se esta editando
 
   ngOnInit(): void {
     //? Obtencion de la data del TypeIncome
@@ -118,13 +117,13 @@ export class IncomesPageComponent implements OnInit {
     this.currentEditingId = null;
   }
 
+  //? metodo para resetear el form y el modo de edicion
   private setAddMode(): void {
     this.isEditMode = false;
     this.currentEditingId = null;
     this.IncomeForm.reset();
   }
 
-  //? metodo para mostrar mensajes y validar si el formulario es valido
 
   /**
    * Verifica si un campo es inválido (usa servicio centralizado)
@@ -140,6 +139,8 @@ export class IncomesPageComponent implements OnInit {
     return this._formValidService.getFieldError(this.IncomeForm, fieldName);
   }
 
+
+  // Agrega un nuevo Income
   OnSubmit(): void {
     if (!this.IncomeForm.valid) {
       return;
@@ -152,6 +153,7 @@ export class IncomesPageComponent implements OnInit {
     }
   }
 
+  //? metodo para agregar un nuevo Income
   private addNewIncome(): void {
     const formValue = this.IncomeForm.value;
     //Mapea el formValue para que coincida con el IncomeDTO
@@ -184,7 +186,7 @@ export class IncomesPageComponent implements OnInit {
     });
   }
 
-
+  //? metodo para eliminar un Income
   OnDeteleid(id: number) {
     this._incomesService.deleteIncomeByID(id).subscribe({
       next: (result) => {
@@ -205,14 +207,15 @@ export class IncomesPageComponent implements OnInit {
     });
   }
 
+  //? metodo para editar un Income
   OnEditIncomeById(id: number) {
     console.log('Editar ingreso con ID:', id);
-    
+
     // Buscar el ingreso por ID y cargar sus datos en el formulario
     const incomeToEdit = this.incomes().find(
       (income) => income.idIncome === id
     );
-    
+
     if (!incomeToEdit) {
       console.error('No hay Ingresos con ese Id', id);
       this.sw.fire({
@@ -249,6 +252,7 @@ export class IncomesPageComponent implements OnInit {
     console.log('Formulario cargado para edición:', this.IncomeForm.value);
   }
 
+  /* metodo que se ejecuta si el dialog es para editar */
   private executeUpdate(): void {
     if (!this.currentEditingId || !this.IncomeForm.valid) {
       console.error('Formulario inválido o ID faltante para actualizar');

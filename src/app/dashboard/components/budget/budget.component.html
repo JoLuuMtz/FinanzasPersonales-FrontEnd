@@ -17,7 +17,7 @@
       <button
         class="absolute top-3 right-3 w-5 h-5 text-amber-50 bg-transparent hover:bg-gray-700 hover:text-white transition-colors cursor-pointer rounded"
         aria-label="Eliminar presupuesto"
-        (click)="deleteBudget(1)"
+        (click)="deleteBudget(budget.idBudget)"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
           <path
@@ -72,12 +72,45 @@
 >
   <!-- TODO: HACER EL FORM para agregar presupuestos -->
 
-  <!-- Botón de enviar (puedes conectar el submit luego en el TS) -->
-  <button
-    type="submit"
-    (click)="closeDialog()"
-    class="cursor-pointer mt-4 p-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
-  >
-    Agregar
-  </button>
+<form class="space-y-4" [formGroup]="budgetForm" (submit)="addNewBudget($event)" novalidate>
+  
+  <div class="flex flex-col">
+    <label class="text-black font-semibold mb-2">Nombre</label>
+    <input
+      type="text"
+      formControlName="name"
+      class="p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none transition-colors bg-white text-black"
+      placeholder="Ingrese el nombre del presupuesto"
+    />
+    @if (isValidField('name')) {
+      <span class="text-red-500 text-xs mt-1">{{ getErrorField('name') }}</span>
+    }
+  </div>
+
+  <div class="flex flex-col">
+    <label class="text-black font-semibold mb-2">Descripción</label>
+    <textarea
+      formControlName="descripcion"
+      rows="3"
+      class="p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none transition-colors bg-white text-black resize-none"
+      placeholder="Ingrese una descripción"
+    ></textarea>
+    @if (isValidField('descripcion')) {
+      <span class="text-red-500 text-xs mt-1">{{ getErrorField('descripcion') }}</span>
+    }
+  </div>
+
+  <div class="flex justify-center">
+    <button
+      type="submit"
+      class="cursor-pointer mt-4 p-2 pl-24 pr-24 flex items-center justify-center bg-black text-white rounded hover:bg-gray-800 transition-colors
+        disabled:opacity-50  disabled:hover:bg-black"
+        [disabled]="!budgetForm.valid"
+    >
+      Agregar
+    </button>
+  </div>
+
+</form>
+
 </dialog-form>

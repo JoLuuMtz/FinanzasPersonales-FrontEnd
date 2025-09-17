@@ -12,6 +12,7 @@ export class FormValidService {
   // MÉTODOS DE VALIDACIÓN DE FORMULARIOS
   // ================================
 
+  // comprueba si el campo es valido 
   isFieldInvalid(form: FormGroup, fieldName: string): boolean {
     const field = form.get(fieldName);
     return !!(field?.invalid && field?.touched);
@@ -25,6 +26,7 @@ export class FormValidService {
     return form.get(fieldName)?.errors?.['serverError'] || null;
   }
 
+  // manda el error del campo
   getFieldError(form: FormGroup, fieldName: string): string | null {
     const errors = form.controls[fieldName]?.errors;
     if (!errors) return null;
