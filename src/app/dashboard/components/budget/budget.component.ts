@@ -2,12 +2,12 @@ import { BudgetService } from './../../services/budget.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { UserService } from '../../../user/services/user.service';
-import { UserBudget } from '../../../auth/interfaces/user.interfaces';
 import { DialogFormComponent } from '../dialog-form/dialog-form.component';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FormValidService } from '../../../shared/services/form-valid.service';
 import { CreateBudgetDTO } from '../../interfaces/budget.interface';
 import Swal from 'sweetalert2';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'budget-component',
@@ -81,7 +81,19 @@ export class BudgetComponent {
       description: formValue.descripcion!
     };
 
-    this._budgetService.addNewBudget(newBudget).subscribe({
+    // Mostrar loading mientras se crea
+    this._sw.fire({
+      title: 'Creando presupuesto...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        this._sw.showLoading();
+      },
+    });
+
+    this._budgetService
+      .addNewBudget(newBudget)
+      .pipe(finalize(() => this._sw.close()))// cuando finalice la operacion cierra el loading
+      .subscribe({
       next: (budget) => {
         console.log('Nuevo presupuesto agregado:', budget);
         if (budget) {
@@ -91,7 +103,6 @@ export class BudgetComponent {
             icon: 'success',
             confirmButtonText: 'OK',
           });
-          this.closeDialog();
           this.budgetForm.reset();
         }
       },
@@ -132,7 +143,19 @@ export class BudgetComponent {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          this._budgetService.deleteBudget(id).subscribe({
+          // Mostrar loading mientras se elimina
+          this._sw.fire({
+            title: 'Eliminando presupuesto...',
+            allowOutsideClick: false,
+            didOpen: () => {
+              this._sw.showLoading();
+            },
+          });
+
+          this._budgetService
+            .deleteBudget(id)
+            .pipe(finalize(() => this._sw.close()))
+            .subscribe({
             next: (result) => {
               if (result) {
                 this._sw.fire({
