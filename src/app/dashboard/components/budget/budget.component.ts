@@ -1,20 +1,31 @@
+import { BudgetService } from './../../services/budget.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { UserService } from '../../../user/services/user.service';
 import { UserBudget } from '../../../auth/interfaces/user.interfaces';
 import { DialogFormComponent } from '../dialog-form/dialog-form.component';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FormValidService } from '../../../shared/services/form-valid.service';
+import { CreateBudgetDTO } from '../../interfaces/budget.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'budget-component',
-  imports: [CurrencyPipe, CommonModule, DialogFormComponent, ReactiveFormsModule],
+  imports: [
+    CurrencyPipe,
+    CommonModule,
+    DialogFormComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './budget.component.html',
 })
 export class BudgetComponent {
-  private readonly userService = inject(UserService);
+
+  private readonly _userService = inject(UserService);
   private readonly validFormServices = inject(FormValidService);
+  private readonly _budgetService = inject(BudgetService);
   private readonly fb = inject(FormBuilder);
+  private readonly _sw = Swal;
 
   public budgetForm = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(20)]],
@@ -31,30 +42,11 @@ export class BudgetComponent {
   //? propiedades del formDialog Budget
   isVisible: boolean = false;
 
-  //
-  public budgets: UserBudget[] = this.userService.User().userBudgets;
+  public budgets = computed(() => this._userService.User()?.userBudgets || []); //? data del usuario
 
-  constructor() {}
-
-  //TODO: IMPLEMENTAR EL SERVICIO DE BORRADO DE PRESUPUESTOS
-  deleteBudget(id: number): void {
-    console.log('deleteBudget', id);
-  }
+  constructor() { }
 
   //TODO: iMPLEMENTAR EL SERVICIO DE AREGAR NUEVO PRESPUESTO Y  PONERLO EN LA LISTA
-  addNewBudget(event?: Event) {
-    if (event) {
-      event.preventDefault();
-    }
-    
-    if (!this.budgetForm.valid) {
-      // Marcar todos los campos como touched para mostrar errores
-      this.budgetForm.markAllAsTouched();
-      return;
-    }
-    console.log("valores => ", this.budgetForm.value);
-    this.closeDialog();
-  }
 
   // verifica sie es valido o ha sido tocado el campo
   isValidField(field: string): boolean {
@@ -73,8 +65,95 @@ export class BudgetComponent {
     this.isVisible = true;
   }
 
- closeDialog() {
+  closeDialog() {
     this.isVisible = false;
   }
-  //
+
+  // ? CRUD OPERATIONS
+
+  addNewBudget(): void {
+
+    const formValue = this.budgetForm.value;
+
+    // Se mapea la data 
+    const newBudget: CreateBudgetDTO = {
+      name: formValue.name!,
+      description: formValue.descripcion!
+    };
+
+    this._budgetService.addNewBudget(newBudget).subscribe({
+      next: (budget) => {
+        console.log('Nuevo presupuesto agregado:', budget);
+        if (budget) {
+          this._sw.fire({
+            title: '¡Éxito!',
+            text: 'El presupuesto se ha creado correctamente',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
+          this.closeDialog();
+          this.budgetForm.reset();
+        }
+      },
+      error: (error) => {
+        this._sw.fire({
+          title: 'Error',
+          text: 'No se pudo crear el presupuesto. Intenta nuevamente.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+        console.error('Error al agregar el presupuesto:', error);
+      },
+    });
+
+    this.closeDialog();
+  }
+
+  deleteBudget(id: number): void {
+
+    console.log(id);
+    const budgetToDelete = this.budgets().find(
+      (budget) => budget.idBudget === id
+    );
+    const budgetName = budgetToDelete
+      ? budgetToDelete.name
+      : 'este presupuesto';
+
+    this._sw
+      .fire({
+        title: `¿Eliminar prespuesto: ${budgetName}`,
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this._budgetService.deleteBudget(id).subscribe({
+            next: (result) => {
+              if (result) {
+                this._sw.fire({
+                  title: '¡Éxito!',
+                  text: 'El presupuesto se ha eliminado correctamente',
+                  icon: 'success',
+                  confirmButtonText: 'OK',
+                });
+              }
+            },
+            error: (error) => {
+              this._sw.fire({
+                title: 'Error',
+                text: 'No se pudo eliminar el presupuesto. Intenta nuevamente.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+              });
+              console.error('Error al eliminar presupuesto:', error);
+            },
+          });
+        }
+      });
+  }
 }

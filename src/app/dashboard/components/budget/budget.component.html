@@ -2,7 +2,23 @@
   <!-- Contenedor principal con scroll horizontal para las cartas -->
   <div class="flex gap-4 p-4 sticky overflow-x-auto">
     <!-- Budget Cards -->
-    @for ( budget of budgets; track $index ) {
+
+
+        @if(budgets().length === 0){
+
+        <div class="flex flex-col items-center justify-center p-8 text-gray-400">
+          <svg class="w-16 h-16 mb-4 opacity-50" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2h12v8H4V6z"/>
+          </svg>
+          <p>No hay presupuestos</p>
+        </div>
+      }
+      @else{
+    
+    @for ( budget of budgets(); track $index ) {
+
+  
+
     <div
       class="relative bg-black rounded-lg p-6 w-40 h-32 flex flex-col justify-between text-white shadow-lg hover:bg-gray-900 transition-colors duration-200 flex-shrink-0"
       style="
@@ -40,7 +56,9 @@
         </p>
       </div>
     </div>
+
     }
+  }
 
     <!-- Puedes agregar más cartas aquí y se hará scroll horizontal automáticamente -->
   </div>
@@ -72,7 +90,7 @@
 >
   <!-- TODO: HACER EL FORM para agregar presupuestos -->
 
-<form class="space-y-4" [formGroup]="budgetForm" (submit)="addNewBudget($event)" novalidate>
+<form class="space-y-4" [formGroup]="budgetForm" (submit)="addNewBudget()" novalidate>
   
   <div class="flex flex-col">
     <label class="text-black font-semibold mb-2">Nombre</label>
