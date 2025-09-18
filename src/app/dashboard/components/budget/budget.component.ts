@@ -1,6 +1,6 @@
 import { BudgetService } from './../../services/budget.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../../user/services/user.service';
 import { DialogFormComponent } from '../dialog-form/dialog-form.component';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +26,9 @@ export class BudgetComponent {
   private readonly _budgetService = inject(BudgetService);
   private readonly fb = inject(FormBuilder);
   private readonly _sw = Swal;
+
+  // emite el valor del id del prespuesto seleccionado
+  @Output() selectBudget = new EventEmitter<number>();
 
   public budgetForm = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(20)]],
@@ -75,7 +78,7 @@ export class BudgetComponent {
 
     const formValue = this.budgetForm.value;
 
-    // Se mapea la data 
+    // Se mapea la data
     const newBudget: CreateBudgetDTO = {
       name: formValue.name!,
       description: formValue.descripcion!

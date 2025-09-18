@@ -5,7 +5,18 @@
     </div>
     <!-- contenido -->
     <div class="mx-40">
-    <budget-component></budget-component>
+    <budget-component (click)="showTable()"></budget-component>
     </div>
+
+  <!-- <div class="flex">
+    <history-table
+        [Data]="budgetsList()"
+        (edit)="OnEditIncomeById($event)"
+        (delete)="OnDeteleid($event)"
+
+    ></history-table>
+
+  </div> -->
+
 </div>
 

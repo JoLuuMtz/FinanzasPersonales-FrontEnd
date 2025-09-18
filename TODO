@@ -1,9 +1,8 @@
 
-### EJECUTATR EL BACK END dotnet run --launch-profile "https"
+
+
 📋 Lista de TODOs Pendientes
 
-✅ Implementar el Estado de autenticacion y token ( listo )
-**
 🏠 Módulo Dashboard
 
  Componentes Generales
@@ -21,11 +20,22 @@ Tablas
 - Leer y entender que hace este Interceptor  Al momento de implementar el Token para las peticiones protegidas de mi bakend
 
 # Modulo 2
+```
+//TODO:  Implementar Http-Only para el almacenar el token en la Cookie y no en el LocalStorage ( Luego de terminar el primer modulo )
 
-//TODO:  Implementar Http-Only para el almacenar el token en la Cookie y no en el LocalStorage (Luego de terminar el primer modulo )
+//TODO: Implementar con IA una api que recolecte los datos de mi app y que genere una forma de ahorrar como si fuera un agente de finanzas para mejorar el presupuesto y el uso del dinero por usuario
+```
 
-1 //TODO: Implementar servicio de Income Para Agregar Editar y actualizar Incomes  (terminar formulario y validaciones)
-2 //TODO: Implementar el Dialog en el Budget (Formulario etc)
-3 //TODO: Implementar el Table Budget Por Categorias
+# Primer Modulo
+
+
+## Hacer en la mañana por favor
+
+3 //TODO: Implementar el Table Budget Por Categoria (hacer 18 de septiembre)
+
 4 //TODO: Implementar el
-5 //TODO: Crear un Pipe donde indique que si el numero del total es mayor  que 6  cifras le asigne el valor de M para simplificar
+5 //TODO: Crear un Pipe donde indique que si el numero del total es mayor  que 6  cifras le asigne el valor de M para simplificar (verificar 18-septiembre)
+
+//TODO: Realizar Crud de las categorias de los Budget
+//TODO: Implementar el gasto mediante el budget, donde una categoria de presupuesto se convierte en un gasto
+
