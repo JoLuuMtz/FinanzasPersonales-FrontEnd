@@ -5,18 +5,26 @@
     </div>
     <!-- contenido -->
     <div class="mx-40">
-    <budget-component (click)="showTable()"></budget-component>
+    <budget-component (selectBudget)="onSelectBudget($event)"></budget-component>
     </div>
 
-  <!-- <div class="flex">
-    <history-table
-        [Data]="budgetsList()"
+  <!-- Dialog with selected budget lists -->
+  <dialog-form
+    [isVisible]="isTableVisible"
+    [title]="'Detalles del presupuesto'"
+    [width]="'800px'"
+    [height]="'600px'"
+    (closeDialog)="closeTableDialog()"
+  >
+    <div class="p-4">
+      <!--? Tabla  para el budget category -->
+      <budgets-table-history
+        [Data]="selectedBudgetLists()"
         (edit)="OnEditIncomeById($event)"
         (delete)="OnDeteleid($event)"
-
-    ></history-table>
-
-  </div> -->
+      ></budgets-table-history>
+    </div>
+  </dialog-form>
 
 </div>
 
