@@ -29,8 +29,9 @@ export class BudgetPageComponent {
   public isTableVisible = false;
   public selectedBudgetId = signal<number | null>(null);// señal que emite el id del budget
 
-  // Lists of the selected budget
+  //?  Obtiene la lista del BudgetSELECCIONADO POR EL ID
   private getSelectedBudgetLists(): BudgetList[] {
+
     const id = this.selectedBudgetId();
     if (id == null) return [];
 
